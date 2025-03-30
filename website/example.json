@@ -1,0 +1,46 @@
+{
+    "Name": "docs for my website",
+    "SideBar":[
+        "Home", "Installation", "Usage" 
+    ],
+    "Home": {
+        "Title": "Welcome to my website",
+        "Content": {
+            "Header": "Welcome to my website",
+            "ASideBar": [
+                "About", "Partners"
+            ],
+            "Data": [
+                {
+                    "ID": 1,
+                    "Heading": "About",
+                    "Children": [
+                        {
+                            "Type": "Paragraph",
+                            "Text": "This is a paragraph in the about section. data in this content is in markdown format"
+                        },
+                        {
+                            "Type": "List",
+                            "Text": "heading for list",
+                            "Items": [
+                                "Item 1",
+                                "Item 2",
+                                "Item 3"
+                            ]
+                        },
+                        {
+                            "Type": "Codeblock",
+                            "Language": "python",
+                            "Code": "print('Hello World')"
+                        }
+                    ]
+                },
+                {
+                    "ID": 2,
+                    "Heading": "Partners",
+                    "Children": []
+                }
+            ]
+        }
+    }
+}
