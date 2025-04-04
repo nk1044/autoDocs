@@ -42,54 +42,48 @@
     },
     "Installation": {
         "Title": "Installation",
-        "Content": {
-            "Header": "Installation",
-            "ASideBar": [
-                "Requirements", "Installation Steps"
-            ],
-            "Data": [
-                {
-                    "ID": 1,
-                    "Heading": "Requirements",
-                    "Children": [
-                        {
-                            "Type": "Paragraph",
-                            "Text": "This is a paragraph in the requirements section. data in this content is in markdown format"
-                        }
-                    ]
-                },
-                {
-                    "ID": 2,
-                    "Heading": "Installation Steps",
-                    "Children": []
-                }
-            ]
-        }
+        "ASideBar": [
+            "Requirements", "Installation Steps"
+        ],
+        "Data": [
+            {
+                "ID": 1,
+                "Heading": "Requirements",
+                "Children": [
+                    {
+                        "Type": "Paragraph",
+                        "Text": "This is a paragraph in the requirements section. data in this content is in markdown format"
+                    }
+                ]
+            },
+            {
+                "ID": 2,
+                "Heading": "Installation Steps",
+                "Children": []
+            }
+        ]
     },
     "Usage": {
         "Title": "Usage",
-        "Content": {
-            "Header": "Usage",
-            "ASideBar": [
-                "Basic Usage", "Advanced Usage"
-            ],
-            "Data": [
-                {
-                    "ID": 1,
-                    "Heading": "Basic Usage",
-                    "Children": [
-                        {
-                            "Type": "Paragraph",
-                            "Text": "This is a paragraph in the basic usage section. data in this content is in markdown format"
-                        }
-                    ]
-                },
-                {
-                    "ID": 2,
-                    "Heading": "Advanced Usage",
-                    "Children": []
-                }
-            ]
-        }
+        "ASideBar": [
+            "Basic Usage", "Advanced Usage"
+        ],
+        "Data": [
+            {
+                "ID": 1,
+                "Heading": "Basic Usage",
+                "Children": [
+                    {
+                        "Type": "Paragraph",
+                        "Text": "This is a paragraph in the basic usage section. data in this content is in markdown format"
+                    }
+                ]
+            },
+            {
+                "ID": 2,
+                "Heading": "Advanced Usage",
+                "Children": []
+            }
+        ]
     }
 }
