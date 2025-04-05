@@ -29,7 +29,7 @@ export const data = {
                     {
                         "Type": "Codeblock",
                         "Language": "python",
-                        "Code": "print('Hello World')"
+                        "Code": "print('Hello World, test code')"
                     }
                 ]
             },
