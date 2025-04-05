@@ -1,4 +1,4 @@
-{
+export const data = {
     "Name": "docs for my website",
     "SideBar":[
         "Home", "Installation", "Usage" 
