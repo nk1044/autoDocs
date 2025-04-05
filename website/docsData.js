@@ -6,7 +6,12 @@ export const data = {
     "Home": {
         "Title": "Welcome to my website",
         "ASideBar": [
-            "About", "Partners"
+            {"Title":"About",
+            "ID": 1
+            },
+            {"Title":"Partners",
+            "ID": 2
+            }
         ],
         "Data": [
             {
@@ -53,7 +58,12 @@ export const data = {
     "Installation": {
         "Title": "Installation",
         "ASideBar": [
-            "Requirements", "Installation Steps"
+        {"Title":"Requirements",
+        "ID": 1
+        },
+        {"Title":"Installation Steps",
+        "ID": 2
+        }
         ],
         "Data": [
             {
@@ -76,7 +86,12 @@ export const data = {
     "Usage": {
         "Title": "Usage",
         "ASideBar": [
-            "Basic Usage", "Advanced Usage"
+            {"Title":"Basic Usage",
+            "ID": 1
+            },
+            {"Title":"Advanced Usage",
+            "ID": 2
+            }
         ],
         "Data": [
             {

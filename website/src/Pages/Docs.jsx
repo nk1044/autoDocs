@@ -28,8 +28,17 @@ function Docs() {
 
             <div className='col-span-1 pt-7 text-md overflow-auto h-full bg-neutral-900 border rounded-l-2xl p-3 border-neutral-700'>
                 {asideItems.map((item, index) => (
-                    <div key={index} className='text-neutral-400 mb-1 hover:text-neutral-200 cursor-pointer'>
-                        • {item}
+                    <div key={index} className='text-neutral-400 mb-1 hover:text-neutral-200 cursor-pointer'
+                    onClick={() => {
+                        const element = document.getElementById(item?.ID ? item.ID : item?.Title);
+                        if (element) {
+                            element.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                    }>
+                        <a href={'#' + (item?.ID ? item.ID : item?.Title)} className='text-neutral-400 hover:text-neutral-200'>
+                        • {item?.Title}
+                        </a>
                     </div>
                 ))}
             </div>
