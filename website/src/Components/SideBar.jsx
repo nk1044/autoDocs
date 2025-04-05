@@ -18,7 +18,7 @@ function SideBar() {
               }`
             }
           >
-            <div className='border-b px-1 border-neutral-700'>
+            <div className='border-b px-1 border-neutral-700 overflow-auto'>
                 {doc}
               </div>
           </NavLink>

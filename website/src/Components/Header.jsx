@@ -9,7 +9,7 @@ function Header() {
       <div className='flex flex-row items-center justify-between w-full bg-neutral-800 p-3 rounded-lg border-b border-neutral-700 shadow-sm'>
 
         {/* Logo */}
-        <div className='flex flex-row items-center cursor-pointer space-x-1'>
+        <div className='flex flex-row items-center cursor-pointer space-x-1 ml-3'>
           <svg className="w-7 h-7 sm:w-9 sm:h-9 text-white" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
           </svg>
@@ -29,7 +29,7 @@ function Header() {
         </div>
 
         {/* Icons Section */}
-        <div className='flex items-center space-x-1'>
+        <div className='flex items-center space-x-1 mr-3'>
 
           {/* GitHub Icon */}
           <a

@@ -7,11 +7,11 @@ function Layout() {
   return (
     <div className='flex flex-col gap-2 h-screen bg-neutral-900'>
       <Header />
-      <div className='flex flex-row flex-grow h-full'>
-      <div className='w-1/4 '>
+      <div className='grid grid-cols-6 gap-1 h-full'>
+      <div className='col-span-1 '>
         <SideBar />
       </div>
-      <div className='w-3/4 '>
+      <div className='col-span-5 '>
         <Outlet />
       </div>
     </div>
