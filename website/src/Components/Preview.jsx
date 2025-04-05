@@ -2,6 +2,7 @@ import React from 'react'
 import Paragraph from './Tools/Paragraph';
 import CodeBlock from './Tools/CodeBlock';
 import ListBlock from './Tools/ListBlock';
+import TableBlock from './Tools/TableBlock';
 
 function Preview({Content}) {
 
@@ -19,6 +20,9 @@ function Preview({Content}) {
             }
             else if (item.Type === "List") {
                 return <ListBlock key={index} text={item?.Text} items={item?.Items} />
+            }
+            else if (item.Type === "Table") {
+                return <TableBlock key={index} title={item?.Title} headers={item?.Headers} rows={item?.Rows} />
             }
         }
         )}
