@@ -9,11 +9,11 @@ function SideBar() {
   const [active, setActive] = useState('')
 
   return (
-      <div className='flex flex-col h-screen'>
+      <div className='flex flex-col h-full bg-neutral-800 border rounded-r-2xl border-neutral-700'>
         <div className='p-4 text-2xl font-bold'>Docs</div>
         <div className='flex flex-col'>
           {docs.map((doc, index) => (
-            <Link to={`/docs/${doc}`} key={index} className={`p-4 hover:bg-gray-700 ${active === doc ? 'bg-gray-700' : ''}`} onClick={() => setActive(doc)}>
+            <Link to={`/docs/${doc}`} key={index} className={`p-4 hover:bg-neutral-700 ${active === doc ? 'bg-neutral-700' : ''}`} onClick={() => setActive(doc)}>
               {doc}
             </Link>
           ))}
