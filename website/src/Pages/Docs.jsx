@@ -13,10 +13,10 @@ function Docs() {
                 {currentDoc.Title}
             </div>
 
-            <div className='col-span-1 overflow-auto h-full bg-neutral-900 border rounded-l-2xl p-4 border-neutral-700'>
+            <div className='col-span-1 text-md overflow-auto h-full bg-neutral-900 border rounded-l-2xl p-3 border-neutral-700'>
                 {asideItems.map((item, index) => (
-                    <div key={index} className='text-neutral-400 hover:text-neutral-200 cursor-pointer'>
-                        {item}
+                    <div key={index} className='text-neutral-400 mb-1 hover:text-neutral-200 cursor-pointer'>
+                        • {item}
                     </div>
                 ))}
             </div>
