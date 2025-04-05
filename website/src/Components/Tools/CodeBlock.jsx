@@ -12,7 +12,7 @@ function CodeBlock({ code, language = "javascript" }) {
     };
 
     return (
-        <div className="relative rounded-xl bg-neutral-800 border border-neutral-700 p-4 text-md shadow-md">
+        <div className="relative rounded-lg bg-neutral-800 border border-neutral-700 px-4 py-2 text-md shadow-md">
             <div className="flex justify-between items-center mb-3">
                 <span className="text-neutral-400 bg-transparent font-medium capitalize">
                     {language} code
