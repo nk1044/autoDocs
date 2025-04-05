@@ -12,7 +12,7 @@ function Docs() {
 
             <div className='col-span-5 h-full bg-neutral-900 border rounded-2xl px-4 py-2 border-neutral-700'>
                 <div className='w-full border-b border-neutral-700 '>
-                    <h1 className='text-center font-semibold text-4xl pb-1'>{currentDoc?.Title}</h1>
+                    <h1 className='text-center font-semibold text-4xl pb-2 pt-1'>{currentDoc?.Title}</h1>
                 </div>
 
                 <div className='mt-4'>
@@ -26,7 +26,7 @@ function Docs() {
                 </div>
             </div>
 
-            <div className='col-span-1 text-md overflow-auto h-full bg-neutral-900 border rounded-l-2xl p-3 border-neutral-700'>
+            <div className='col-span-1 pt-7 text-md overflow-auto h-full bg-neutral-900 border rounded-l-2xl p-3 border-neutral-700'>
                 {asideItems.map((item, index) => (
                     <div key={index} className='text-neutral-400 mb-1 hover:text-neutral-200 cursor-pointer'>
                         • {item}

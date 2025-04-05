@@ -7,7 +7,7 @@ function SideBar() {
 
   return (
     <div className='flex flex-col h-full bg-neutral-900 border rounded-r-2xl border-neutral-700'>
-      <div className='flex flex-col'>
+      <div className='flex flex-col pt-7'>
         {docs.map((doc, index) => (
           <NavLink
             to={`/docs/${doc}`}
