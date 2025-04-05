@@ -21,9 +21,9 @@ export const data = {
                         "Type": "List",
                         "Text": "heading for list",
                         "Items": [
-                            "Item 1",
-                            "Item 2",
-                            "Item 3"
+                            "[bold]Item 1[/bold]",
+                            "[code]Item 2[/code]",
+                            "[link]Item 3(#)[/link]"
                         ]
                     },
                     {

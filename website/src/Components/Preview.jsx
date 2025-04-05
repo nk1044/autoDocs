@@ -18,7 +18,7 @@ function Preview({Content}) {
                 return <CodeBlock key={index} code={item.Code} language={item.Language} />
             }
             else if (item.Type === "List") {
-                return <ListBlock key={index} Text={item?.Text} Items={item?.Items} />
+                return <ListBlock key={index} text={item?.Text} items={item?.Items} />
             }
         }
         )}
