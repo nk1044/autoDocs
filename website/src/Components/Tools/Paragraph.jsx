@@ -1,12 +1,11 @@
 import React from 'react'
+import {formatText} from './Formtter.jsx'
 
 function Paragraph({
     Text
 }) {
   return (
-    <div className='text-neutral-300 text-lg mb-2'>
-    {Text}
-    </div>
+    <p className="text-lg text-neutral-300">{formatText(Text)}</p>
   )
 }
 

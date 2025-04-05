@@ -27,7 +27,7 @@ export const formatText = (raw) => {
             const end = raw.indexOf('[/bold]', i);
             if (end === -1) break;
             const content = raw.substring(i + 6, end);
-            result.push(<strong key={`bold-${key++}`}>{content}</strong>);
+            result.push(<strong className="text-white font-extrabold" key={`bold-${key++}`}>{content}</strong>);
             i = end + 7;
         } 
         else if (raw.substring(i, i + 6) === '[link]') {

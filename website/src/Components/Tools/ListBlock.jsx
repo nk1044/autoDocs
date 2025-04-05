@@ -1,5 +1,4 @@
 import React from 'react';
-import InlineBlock from './InlineBlock';
 import { formatText } from './Formtter.jsx';
 
 function ListBlock({
