@@ -16,7 +16,7 @@ function Layout() {
       <div className="flex flex-1 overflow-hidden">
         {/* Fixed Sidebar */}
         <div className="flex-none w-64 overflow-y-auto bg-neutral-950 border-r border-neutral-800">
-          <SideBar data={sidebarData} />
+          <SideBar sidebarData={sidebarData} />
         </div>
         
         {/* Scrollable Content Area */}
