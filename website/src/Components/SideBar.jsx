@@ -19,8 +19,8 @@ function SideBarItem({ item, level = 0 }) {
         <div
           onClick={toggleFolder}
           className={`flex items-center cursor-pointer px-3 py-1.5 rounded-sm transition-all 
-            hover:bg-orange-900 hover:text-orange-400
-            ${isExpanded ? 'bg-orange-950 text-orange-400' : 'text-neutral-300'}
+            hover:bg-neutral-800 hover:text-orange-400
+            ${isExpanded ? ' text-orange-400' : 'text-neutral-300'}
           `}
           style={{ paddingLeft }}
         >
@@ -33,7 +33,7 @@ function SideBarItem({ item, level = 0 }) {
         </div>
       ) : (
         <NavLink
-          to={`/${item.path}`}
+          to={`/docs/${item.path}`}
           className={({ isActive }) =>
             `flex items-center px-3 py-1.5 rounded-sm transition-all ${
               isActive
