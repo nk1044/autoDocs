@@ -1,23 +1,31 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
-import SideBar from '../Components/SideBar'
-import Header from '../Components/Header'
-import {sidebarData} from '../../data/sidebarData.js';
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import SideBar from '../Components/SideBar';
+import Header from '../Components/Header';
+import { sidebarData } from '../../data/sidebarData.js';
 
 function Layout() {
   return (
-    <div className='flex flex-col gap-2 h-screen'>
-      <Header />
-      <div className='grid grid-cols-6 h-full border-t border-neutral-800'>
-      <div className='col-span-1 border-r border-neutral-800'>
-        <SideBar data={sidebarData} />
+    <div className="flex flex-col h-screen">
+      {/* Fixed Header */}
+      <div className="flex-none">
+        <Header />
       </div>
-      <div className='col-span-5 border-l border-neutral-800 '>
-        <Outlet />
+      
+      {/* Main Content Area with fixed sidebar and scrollable content */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Fixed Sidebar */}
+        <div className="flex-none w-64 overflow-y-auto bg-neutral-950 border-r border-neutral-800">
+          <SideBar data={sidebarData} />
+        </div>
+        
+        {/* Scrollable Content Area */}
+        <div className="flex-1 overflow-auto">
+          <Outlet />
+        </div>
       </div>
     </div>
-    </div>
-  )
+  );
 }
 
-export default Layout
+export default Layout;

@@ -59,6 +59,8 @@ function SideBarItem({ item, level = 0 }) {
 }
 
 function SideBar({ data }) {
+  console.log('Sidebar data:', data);
+  
   return (
     <div className="flex flex-col h-full w-64 bg-neutral-900 border-r border-neutral-700 text-white overflow-auto p-2">
       <div className="text-sm font-semibold text-neutral-400 px-3 mb-2">SIDEBAR</div>
