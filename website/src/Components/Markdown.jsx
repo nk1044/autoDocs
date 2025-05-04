@@ -63,11 +63,12 @@ function Markdown({ content, FullPath }) {
       else if (node.type === 'heading') {
         const headingText = node.children.map(child => child.value || '').join('').trim();
         blocks.push({
-          Type: 'Paragraph',
+          Type: 'Heading',
           Text: headingText,
-          ID: `${FullPath}-${headingText}`
+          Level: node.depth,
+          ID: `${FullPath}-${headingText.replace(/\s+/g, '-')}`
         });
-      }
+      }      
     });
 
     setParsedContent(blocks);

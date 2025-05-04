@@ -3,6 +3,7 @@ import Paragraph from './Tools/Paragraph';
 import CodeBlock from './Tools/CodeBlock';
 import ListBlock from './Tools/ListBlock';
 import TableBlock from './Tools/TableBlock';
+import Heading from './Tools/Heading';
 
 function Preview({Content}) {
 
@@ -15,6 +16,9 @@ function Preview({Content}) {
             if (item.Type === "Paragraph") {
                 return <Paragraph key={index} Text={item.Text} />
             } 
+            else if (item.Type === "Heading") {
+                return <Heading key={index} Text={item.Text} Level={item.Level} />
+              }              
             else if (item.Type === "Codeblock") {
                 return <CodeBlock key={index} code={item.Code} language={item.Language} />
             }
