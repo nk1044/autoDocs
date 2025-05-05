@@ -35,12 +35,11 @@ function Docs() {
   const [showSidebar, setShowSidebar] = useState(false);
 
   const currentDoc = Content.find(doc => doc.path === path);
+
+  // Use empty array if doc is not found
   const asideItems = currentDoc ? AsideBar(currentDoc.content, path) : [];
 
-  if (!currentDoc) {
-    return <div className="p-6 text-neutral-300 bg-black">Document not found</div>;
-  }
-
+  // Always run hooks at the top
   useEffect(() => {
     const hash = window.location.hash.substring(1);
     if (hash) {
@@ -52,6 +51,15 @@ function Docs() {
       }
     }
   }, [currentDoc]);
+
+  // ⛔️ This return must come AFTER all hooks
+  if (!currentDoc) {
+    return (
+      <div className="p-6 w-full h-full text-center text-3xl text-neutral-600 bg-black">
+        Document not found
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col lg:flex-row h-full bg-black text-neutral-200">
@@ -69,7 +77,7 @@ function Docs() {
       <div className="flex-1 overflow-auto px-4 py-4 bg-black">
         <div className="w-full">
           <h1 className="text-center border-b border-neutral-800 font-semibold text-3xl sm:text-4xl pb-2 pt-1 text-neutral-400">
-            {currentDoc?.title}
+            {currentDoc.title}
           </h1>
         </div>
         <div className="mt-6">
@@ -106,5 +114,4 @@ function Docs() {
     </div>
   );
 }
-
 export default Docs;
