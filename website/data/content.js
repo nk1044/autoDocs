@@ -87,7 +87,7 @@ docker exec <container_name/id> <command>
 
 # Port Mapping, Environment Variables, and Docker Volumes
 
-When running a container, we can map ports, set environment variables, and use volumes for persistent data storage. These features enhance container functionality and interaction with the host system. Learn more \[link]here(https://docs.docker.com)\[/link].
+When running a container, we can map ports, set environment variables, and use volumes for persistent data storage. These features enhance container functionality and interaction with the host system. Learn more \[link]here(https://docs.docker.com) \[/link].
 
 ### Code Example
 
@@ -154,7 +154,7 @@ VOLUME /myvol
 
 # Docker Networking
 
-Docker provides different networking options to facilitate communication between containers and external networks. Learn more \[link]here(https://docs.docker.com/network/)\[/link].
+Docker provides different networking options to facilitate communication between containers and external networks. Learn more \[link]here(https://docs.docker.com/network/) \[/link].
 
 ### Network Types Table
 
@@ -233,7 +233,7 @@ ping container2
 
 # Working with Multiple Containers & Pushing Images to Docker Hub
 
-When working with multiple containers, set up a network or use IPs for communication. You can also push images to Docker Hub. Learn more \[link]here(https://docs.docker.com/)\[/link].
+When working with multiple containers, set up a network or use IPs for communication. You can also push images to Docker Hub. Learn more \[link]here(https://docs.docker.com/) \[/link].
 
 ### Managing Multiple Containers
 
