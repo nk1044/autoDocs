@@ -1,4 +1,5 @@
 export const Content = [
+  // docker
   {
     title: 'Docker',
     path: 'Docker',
@@ -315,6 +316,7 @@ docker-compose down
 \`\`\`
 `
   },
+  // git
   {
     title: 'Git & Github',
     path: 'Git&Github',
@@ -435,6 +437,7 @@ git push -u origin main
 6. Regularly push code to avoid losing progress.
     `
   },
+  // PostgreSQL
   {
     title: 'PostgreSQL',
     path: 'PostgreSQL',
@@ -516,6 +519,7 @@ docker-compose down -v
 \`\`\`
     `
   },
+  // Kubernetes
   {
     title: 'Kubernetes',
     path: 'Kubernetes',
@@ -615,4 +619,5 @@ kubectl apply -f deployment.yml
 \`\`\`
 `
   },
+
 ];

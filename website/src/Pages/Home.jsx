@@ -62,8 +62,8 @@ function Home() {
               )
             }
           ].map(({ title, description, icon }) => (
-            <div key={title} className="bg-gray-900 p-6 rounded-lg border border-gray-700">
-              <div className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center mb-4">
+            <div key={title} className="bg-neutral-900 p-6 rounded-lg border border-neutral-800">
+              <div className="w-12 h-12 bg-neutral-900 rounded-full flex items-center justify-center mb-4">
                 <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   {icon}
                 </svg>

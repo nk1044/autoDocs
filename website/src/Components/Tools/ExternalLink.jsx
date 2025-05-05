@@ -1,6 +1,8 @@
 import React from 'react'
 
 function ExternalLink({ title = 'Link', link = '#' }) {
+  console.log(`ExternalLink: ${title} - ${link}`);
+  
   return (
     <a
       href={link}
