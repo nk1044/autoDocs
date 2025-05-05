@@ -3,7 +3,7 @@ export const Content = [
     title: 'Docker',
     path: 'Docker',
     content: `
-## Docker Images
+# Docker Images
 
 To list available images, use \[code]docker images\[/code]. You can run an image in a container using \[code]docker run -it <image_name/id>\[/code]. If the image is not present locally, it will be pulled from Docker Hub. Learn more [link]here(https://docs.docker.com) [/link].
 
@@ -40,9 +40,9 @@ docker run -it -p 1025:1025 <image_name/id>
 
 ---
 
-## Docker Containers
+# Docker Containers
 
-To list all running containers, use \[code]docker container ls\[/code] or \[code]docker ps\[/code]. To see all containers, including stopped ones, use \[code]docker container ls -a\[/code]. Learn more \[link]here(https://docs.docker.com)\[/link].
+To list all running containers, use \[code]docker container ls\[/code] or \[code]docker ps\[/code]. To see all containers, including stopped ones, use \[code]docker container ls -a\[/code]. Learn more \[link]here(https://docs.docker.com) \[/link].
 
 ### Code Example
 
@@ -85,7 +85,7 @@ docker exec <container_name/id> <command>
 
 ---
 
-## Port Mapping, Environment Variables, and Docker Volumes
+# Port Mapping, Environment Variables, and Docker Volumes
 
 When running a container, we can map ports, set environment variables, and use volumes for persistent data storage. These features enhance container functionality and interaction with the host system. Learn more \[link]here(https://docs.docker.com)\[/link].
 
@@ -152,7 +152,7 @@ VOLUME /myvol
 
 ---
 
-## Docker Networking
+# Docker Networking
 
 Docker provides different networking options to facilitate communication between containers and external networks. Learn more \[link]here(https://docs.docker.com/network/)\[/link].
 
@@ -231,7 +231,7 @@ ping container2
 
 ---
 
-## Working with Multiple Containers & Pushing Images to Docker Hub
+# Working with Multiple Containers & Pushing Images to Docker Hub
 
 When working with multiple containers, set up a network or use IPs for communication. You can also push images to Docker Hub. Learn more \[link]here(https://docs.docker.com/)\[/link].
 
@@ -260,7 +260,7 @@ ping container2
 
 ### Pushing to Docker Hub
 
-* Create repo on \[link]Docker Hub(https://hub.docker.com/)\[/link].
+* Create repo on \[link]Docker Hub(https://hub.docker.com/) \[/link].
 * Name image as \[code]<username>/<image_name>\[/code].
 * Login using \[code]docker login\[/code].
 

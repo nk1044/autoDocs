@@ -6,32 +6,45 @@ import TableBlock from './Tools/TableBlock';
 import Heading from './Tools/Heading';
 
 function Preview({Content}) {
-
     if (!Content) {
         return <h1>Page Data Not Available</h1>
     }
-  return (
-    <div className='flex flex-col mt-2 gap-2'>
-        {Content.map((item, index) => {
-            if (item.Type === "Paragraph") {
-                return <Paragraph key={index} Text={item.Text} />
-            } 
-            else if (item.Type === "Heading") {
-                return <Heading key={index} Text={item.Text} Level={item.Level} />
-              }              
-            else if (item.Type === "Codeblock") {
-                return <CodeBlock key={index} code={item.Code} language={item.Language} />
-            }
-            else if (item.Type === "List") {
-                return <ListBlock key={index} text={item?.Text} items={item?.Items} />
-            }
-            else if (item.Type === "Table") {
-                return <TableBlock key={index} title={item?.Title} headers={item?.Headers} rows={item?.Rows} />
-            }
-        }
-        )}
-    </div>
-  )
+    
+    return (
+        <div className='flex flex-col mt-2 gap-2'>
+            {Content.map((item, index) => {
+                if (item.Type === "Paragraph") {
+                    return <Paragraph key={index} Text={item.Text} />
+                } 
+                else if (item.Type === "Heading") {
+                    return <Heading key={index} Text={item.Text} Level={item.Level} />
+                }              
+                else if (item.Type === "Codeblock") {
+                    return <CodeBlock key={index} code={item.Code} language={item.Language} />
+                }
+                else if (item.Type === "List") {
+                    return <ListBlock key={index} text={item?.Text} items={item?.Items} ordered={item?.Ordered} />
+                }
+                else if (item.Type === "Table") {
+                    return <TableBlock key={index} title={item?.Title} headers={item?.Headers} rows={item?.Rows} />
+                }
+                else if (item.Type === "ThematicBreak") {
+                    return <hr key={index} className="my-4 border-neutral-700" />
+                }
+                else if (item.Type === "Blockquote") {
+                    return (
+                        <blockquote 
+                            key={index} 
+                            className="pl-4 border-l-4 border-neutral-600 italic text-neutral-400 my-4"
+                        >
+                            <Paragraph Text={item.Text} />
+                        </blockquote>
+                    )
+                }
+                return null;
+            })}
+        </div>
+    )
 }
 
 export default Preview
