@@ -614,5 +614,5 @@ Apply the deployment using:
 kubectl apply -f deployment.yml
 \`\`\`
 `
-  }
+  },
 ];

@@ -1,39 +1,70 @@
 import React, { useState } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { Copy, Check, Code } from 'lucide-react';
 
-function CodeBlock({ code, language = "javascript" }) {
-    const [copied, setCopied] = useState(false);
+const CodeBlock = ({ code, language = "javascript" }) => {
+  const [copied, setCopied] = useState(false);
 
-    const copyToClipboard = () => {
-        navigator.clipboard.writeText(code);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
-    return (
-        <div className="relative rounded-lg bg-neutral-800 border border-neutral-700 px-4 py-2 text-md shadow-md">
-            <div className="flex justify-between items-center mb-3">
-                <span className="text-neutral-400 bg-transparent font-medium capitalize">
-                    {language} code
-                </span>
-                <button
-                    onClick={copyToClipboard}
-                    className="bg-neutral-700 hover:bg-neutral-600 text-neutral-100 px-3 py-1 rounded-md text-xs transition-all duration-200"
-                >
-                    {copied ? "Copied!" : "Copy"}
-                </button>
-            </div>
-
-            <SyntaxHighlighter
-                language={language}
-                style={oneDark}
-                customStyle={{ borderRadius: '0.5rem', margin: 0, padding: '1rem' }}
-            >
-                {code}
-            </SyntaxHighlighter>
+  return (
+    <div className="relative bg-neutral-950 border border-gray-800 rounded-xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:border-gray-700">
+      {/* Header */}
+      <div className="relative">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neutral-700 via-neutral-600 to-neutral-700" />
+        <div className="flex justify-between items-center px-5 py-3 bg-neutral-950 border-b border-neutral-800 backdrop-blur-sm">
+          <div className="flex items-center gap-2">
+            <Code size={18} className="text-gray-400" />
+            <span className="text-sm text-gray-300 font-medium capitalize tracking-wide">
+              {language}
+            </span>
+          </div>
+          <button
+            onClick={copyToClipboard}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${
+              copied 
+                ? "bg-green-500/20 text-green-300 border border-green-500/30" 
+                : "bg-gray-800 text-gray-300 border border-gray-700 hover:bg-gray-700 hover:border-gray-600"
+            }`}
+            aria-label="Copy code"
+          >
+            {copied ? <Check size={14} /> : <Copy size={14} />}
+            <span>{copied ? "Copied!" : "Copy code"}</span>
+          </button>
         </div>
-    );
-}
+      </div>
+
+      {/* Code content - fully expanded */}
+      <div>
+        <SyntaxHighlighter
+          language={language}
+          style={vscDarkPlus}
+          customStyle={{ 
+            margin: 0, 
+            padding: '1.5rem', 
+            background: 'transparent',
+            fontSize: '0.9rem',
+            lineHeight: '1.5',
+          }}
+          codeTagProps={{ className: 'font-mono' }}
+          showLineNumbers={true}
+          lineNumberStyle={{ opacity: 0.4, minWidth: '2.5em', paddingRight: '1em', userSelect: 'none' }}
+        >
+          {code}
+        </SyntaxHighlighter>
+      </div>
+
+      {/* Footer with subtle branding */}
+      <div className="flex justify-end items-center py-2 px-4 bg-neutral-950 border-t border-neutral-800 text-xs text-gray-500">
+        <span className="opacity-60 tracking-wide">Code Snippet</span>
+      </div>
+    </div>
+  );
+};
 
 export default CodeBlock;

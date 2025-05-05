@@ -3,7 +3,6 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { Folder, FolderOpen, File } from 'lucide-react';
 
 function SideBarItem({ item, level = 0, activePath }) {
-  // Check if this item or any of its children match the active path
   const isInActivePath = (item, currentPath) => {
     if (item.path === currentPath) return true;
     if (item.children) {
@@ -12,13 +11,11 @@ function SideBarItem({ item, level = 0, activePath }) {
     return false;
   };
 
-  // Initialize expanded state based on whether this folder contains the active path
   const [isExpanded, setIsExpanded] = useState(() => {
     const hasActiveChild = item.children && isInActivePath(item, activePath);
     return hasActiveChild;
   });
 
-  // Update expanded state when active path changes
   useEffect(() => {
     if (item.children && isInActivePath(item, activePath)) {
       setIsExpanded(true);
@@ -85,12 +82,13 @@ function SideBarItem({ item, level = 0, activePath }) {
 
 function SideBar({ sidebarData }) {
   const location = useLocation();
-  // Extract the active path from the URL
   const activePath = location.pathname.split('/docs/')[1] || '';
-  
+
   return (
-    <div className="flex flex-col h-full w-64 bg-neutral-900 border-r border-neutral-700 text-white overflow-auto p-2">
-      <div className="text-sm font-semibold text-neutral-400 px-3 mb-2">SIDEBAR</div>
+    <div className="flex flex-col h-full w-64 bg-black border-r border-neutral-800 text-white overflow-auto p-2">
+      <div className="text-sm font-semibold text-neutral-500 px-3 mb-2 tracking-wide uppercase">
+        Sidebar
+      </div>
       {sidebarData && sidebarData.map((item, index) => (
         <SideBarItem 
           key={item.path + index} 
