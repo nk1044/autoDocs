@@ -53,16 +53,16 @@ This custom Markdown format supports basic Markdown syntax with additional custo
 #### Supported Custom Tags
 
 * `\[code]... \[/code]`: Used to highlight inline code (like a shortcode). Equivalent to `<code>...</code>` in HTML.
-* `\[link]text(url)\[/link]`: Creates a clickable link with custom syntax. For example:
-  `\[link]Docker Docs(https://docs.docker.com)\[/link]` → **Docker Docs**
+* `\[link]text(url) \[/link]`: Creates a clickable link with custom syntax. For example:
+  `\[link]Docker Docs(https://docs.docker.com) \[/link]` → **Docker Docs**
 
 #### Supported Code Blocks
 
-* Use triple backticks (\`\`\`) with language type (`bash`, `yaml`, `dockerfile`, etc.) for proper syntax highlighting.
+* Use triple backticks (\`\`\`) with language type (`bash`, `yaml`, `dockerfile`, etc.) for proper syntax highlighting. (include '\' before backticks)
 
-  ```bash
+  \`\`\`bash
   commands
-  ```
+  \`\`\`
 
 #### Tables
 

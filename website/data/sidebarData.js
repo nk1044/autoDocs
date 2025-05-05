@@ -46,11 +46,6 @@ export const sidebarData = [
         path: 'Kubernetes',
         children: []
     },
-    // Django
-    {
-        title: 'Django',
-        path: 'Django',
-        children: []
-    },
+    
 
 ]

@@ -318,6 +318,301 @@ docker-compose down
   {
     title: 'Git & Github',
     path: 'Git&Github',
-    content: ``
+    content: `
+# Git Basics
+
+Git is a distributed version control system that helps developers track changes in their codebase. It follows a flow:
+Workdir → \[code]git add\[/code] → Staging Area → \[code]git commit\[/code] → Repository → \[code]git push\[/code] → Remote (e.g., GitHub).
+
+\`\`\`bash
+# Initialize a new repository
+git init
+
+# Check the status of the repository
+git status
+
+# Add files to staging area
+git add .
+
+# Commit changes with a message
+git commit -m "Initial commit"
+
+# View commit history (compact view)
+git log --oneline
+\`\`\`
+
+# Git Branching and Merging
+
+Git allows working on different features using branches. Branching helps maintain a clean development workflow.
+
+| Command                                      | Description                       |
+| -------------------------------------------- | --------------------------------- |
+| \[code]git branch\[/code]                    | List all branches                 |
+| \[code]git branch \<branch\_name>\[/code]    | Create a new branch               |
+| \[code]git switch \<branch\_name>\[/code]    | Switch to an existing branch      |
+| \[code]git switch -c \<branch\_name>\[/code] | Create and switch to a new branch |
+| \[code]git merge \<branch\_name>\[/code]     | Merge a branch into the current   |
+| \[code]git merge --abort\[/code]             | Abort a merge conflict            |
+| \[code]git branch -d \<branch\_name>\[/code] | Delete a branch                   |
+
+\`\`\`bash
+# Create and switch to a new branch
+git branch feature-branch
+git switch feature-branch
+
+# Merge feature-branch into main
+git switch main
+git merge feature-branch
+
+# Delete a branch after merging
+git branch -d feature-branch
+\`\`\`
+
+# Git Stash and Temporary Changes
+
+Git Stash helps in saving unfinished work temporarily so that you can switch branches or work on urgent changes.
+
+* \[code]git stash\[/code] - Save uncommitted changes
+* \[code]git stash save "message"\[/code] - Save with a message
+* \[code]git stash list\[/code] - View all stashes
+* \[code]git stash pop\[/code] - Apply the most recent stash and remove it
+* \[code]git stash drop\[/code] - Remove the most recent stash
+* \[code]git stash apply stash@{0}\[/code] - Apply a specific stash
+* \[code]git stash clear\[/code] - Remove all stashes
+
+\`\`\`bash
+# Stash changes before switching branches
+git stash save "WIP: Fixing UI issue"
+
+# View all stashes
+git stash list
+
+# Apply and remove stash
+git stash pop
+\`\`\`
+
+# Git Rebase and Reset
+
+Rebasing helps keep the commit history clean, while reset allows reverting to a previous state.
+
+| Command                                         | Description                               |
+| ----------------------------------------------- | ----------------------------------------- |
+| \[code]git rebase \<branch\_name>\[/code]       | Rebase current branch onto another branch |
+| \[code]git reset --hard \<commit\_hash>\[/code] | Reset repository to a specific commit     |
+| \[code]git reflog\[/code]                       | View commit history with references       |
+| \[code]git reflog <commit-hash>\[/code]         | Show changes of a specific commit         |
+
+\`\`\`bash
+# Rebase feature branch onto main
+git switch feature-branch
+git rebase main
+
+# Reset repository to a previous commit
+git reset --hard abc1234
+\`\`\`
+
+# GitHub Repository Setup
+
+When creating a new repository on GitHub, use the following template to initialize and push your project.
+
+\`\`\`bash
+echo "# my-repo" >> README.md
+git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/yourusername/my-repo.git
+git push -u origin main
+\`\`\`
+
+### Git Best Practices
+
+1. Always write meaningful commit messages.
+2. Use feature branches for development.
+3. Keep the main branch clean and stable.
+4. Pull the latest changes before pushing your code.
+5. Use \[code]git rebase\[/code] instead of \[code]git merge\[/code] to maintain a linear history.
+6. Regularly push code to avoid losing progress.
+    `
   },
+  {
+    title: 'PostgreSQL',
+    path: 'PostgreSQL',
+    content: `
+# Introduction
+
+PostgreSQL is a powerful, open-source relational database. Docker allows us to run PostgreSQL in a containerized environment efficiently. This guide covers the installation, configuration, and useful commands to manage PostgreSQL with Docker.
+
+# Setting up PostgreSQL with Docker
+
+To install PostgreSQL in a Docker container, create a \`docker-compose.yml\` file with the following content:
+
+\`\`\`yaml
+version: '3.8'
+services:
+  db:
+    image: postgres\:latest
+    restart: always
+    ports:
+      \- "5432:5432"
+    environment:
+      POSTGRES\_DB: TestDB
+      POSTGRES\_USER: TestUser
+      POSTGRES\_PASSWORD: TestUserPassword
+    volumes:
+      \- ./data/db:/var/lib/postgresql/data
+    healthcheck:
+      test: \["CMD-SHELL", "pg\_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      \- "8080:8080"
+\`\`\`
+
+Run the following command to start PostgreSQL:
+
+\`\`\`bash
+docker-compose up -d
+\`\`\`
+
+# Accessing PostgreSQL
+
+Once the container is running, you can access PostgreSQL using the following connection URL:
+
+\`\`\`plaintext
+postgresql://TestUser\:TestUserPassword\@localhost:5432/TestDB
+\`\`\`
+
+Alternatively, use the \[code]psql\[/code] command inside the running container:
+
+\`\`\`bash
+docker exec -it \<container\_id> psql -U TestUser -d TestDB
+\`\`\`
+
+# Important PostgreSQL Commands
+
+* \[code]CREATE DATABASE mydb;\[/code] - Create a new database.
+* \[code]DROP DATABASE mydb;\[/code] - Delete a database.
+* \[code]CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT);\[/code] - Create a table.
+* \[code]INSERT INTO users (name) VALUES ('John Doe');\[/code] - Insert a record.
+* \[code]SELECT \* FROM users;\[/code] - Retrieve data.
+
+# Stopping and Removing Containers
+
+To stop and remove the running PostgreSQL container, use:
+
+\`\`\`bash
+docker-compose down
+\`\`\`
+
+To remove volumes and associated data:
+
+\`\`\`bash
+docker-compose down -v
+\`\`\`
+    `
+  },
+  {
+    title: 'Kubernetes',
+    path: 'Kubernetes',
+    content: `
+# Introduction to Kubernetes
+Kubernetes (K8s) is an open-source platform for automating deployment, scaling, and managing containerized applications. It provides \[code]container orchestration\[/code], \[code]scalability\[/code], \[code]load balancing\[/code], \[code]high availability\[/code], and seamless \[code]rollouts and rollbacks\[/code].
+
+# Kubernetes Architecture
+Kubernetes follows a master-worker architecture with the following components:
+
+**Control Plane Components**
+1. \[code]Kube-API Server\[/code] - User interaction interface.
+2. \[code]etcd\[/code] - Key-value store for cluster data.
+3. \[code]Controller Manager\[/code] - Handles controllers for nodes, endpoints, etc.
+4. \[code]Scheduler\[/code] - Assigns workloads to worker nodes.
+5. \[code]Cloud Controller Manager\[/code] - Manages cloud provider-specific components.
+
+**Worker Node Components**
+1. \[code]Kubelet\[/code] - Ensures containers are running in pods.
+2. \[code]Kube Proxy\[/code] - Manages network rules for pod communication.
+3. \[code]CRI\[/code] - Manages container runtime.
+
+# Key Kubernetes Objects
+
+| Kubernetes Object | Description |
+|-------------------|-------------|
+| \[code]Pods\[/code]         | Basic deployable unit, abstraction over containers. |
+| \[code]Services\[/code]     | Expose a set of pods to network with a stable IP. |
+| \[code]ConfigMap\[/code]    | External configuration storage. |
+| \[code]Secrets\[/code]      | Securely store sensitive information. |
+| \[code]Volume\[/code]       | Persistent storage for pods. |
+| \[code]Deployment\[/code]   | Manages replicas and updates of pods. |
+| \[code]StatefulSet\[/code]  | For stateful applications like databases. |
+
+# Minikube: Setting Up a Local Kubernetes Cluster(#kubernetes-minikube)
+Minikube allows running Kubernetes locally for testing and development. Below are the commands to set it up:
+
+\`\`\`bash
+minikube start
+minikube status
+minikube stop
+minikube dashboard
+\`\`\`
+
+# Basic kubectl Commands
+\[code]kubectl\[/code] is the CLI tool to interact with Kubernetes. Below are common commands:
+
+| Command | Description |
+|---------|-------------|
+| \[code]kubectl create deployment my-nginx --image=nginx\[/code] | Create a deployment. |
+| \[code]kubectl get deployments\[/code] | List all deployments. |
+| \[code]kubectl get pods\[/code] | List all pods. |
+| \[code]kubectl describe pods\[/code] | Get details about pods. |
+| \[code]kubectl delete deployment my-nginx\[/code] | Delete a deployment. |
+
+# Scaling and Rolling Updates
+To scale and update applications in Kubernetes, use the following commands:
+
+\`\`\`bash
+kubectl scale deployment my-app --replicas=4
+kubectl set image deployment my-app my-container=myimage:v2
+kubectl rollout undo deployment my-app
+\`\`\`
+
+# Deploying Applications with YAML
+Use YAML files to define deployments and services. Below is an example:
+
+\`\`\`yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-nginx
+template:
+  spec:
+    containers:
+      - name: nginx
+        image: nginx:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-nginx-service
+spec:
+  selector:
+    app: my-nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+\`\`\`
+
+Apply the deployment using:
+
+\`\`\`bash
+kubectl apply -f deployment.yml
+\`\`\`
+`
+  }
 ];
