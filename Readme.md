@@ -4,7 +4,7 @@ Use the following custom notations for special formatting within your notes:
 
 * `[code]your_code_here[/code]` → for **inline code**
 * `[bold]your_text_here[/bold]` → for **bold text**
-* `[link]Link Text(URL)[/link]` → for **inline hyperlinks**
+* `[link]Link Text&`URL`[/link]` → for **inline hyperlinks**
 
 ---
 
@@ -53,7 +53,7 @@ This custom Markdown format supports basic Markdown syntax with additional custo
 #### Supported Custom Tags
 
 * `\[code]... \[/code]`: Used to highlight inline code (like a shortcode). Equivalent to `<code>...</code>` in HTML.
-* `\[link]text(url) \[/link]`: Creates a clickable link with custom syntax. For example:
+* `\[link]text&\`url\`\[/link]`: Creates a clickable link with custom syntax. For example:
   `\[link]Docker Docs(https://docs.docker.com) \[/link]` → **Docker Docs**
 
 #### Supported Code Blocks

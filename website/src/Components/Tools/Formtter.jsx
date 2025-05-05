@@ -29,38 +29,41 @@ export const formatText = (raw) => {
             const codeContent = raw.substring(codeStart, codeEnd);
             result.push(<InlineBlock key={`code-${key++}`} text={codeContent} />);
             i = codeEnd + 7;
-        } else if (raw.substring(i, i + 6) === '[link]') {
+        }else if (raw.substring(i, i + 6) === '[link]') {
+            console.log(`link: ${raw.substring(i, i + 60)}`);
+          
             if (currentText) {
-                result.push(<span key={`text-${key++}`}>{formatMarkdown(currentText)}</span>);
-                currentText = '';
+              result.push(currentText);
+              currentText = '';
             }
+          
             const linkStart = i + 6;
             const linkEnd = raw.indexOf('[/link]', linkStart);
+          
             if (linkEnd === -1) {
-                currentText += raw.substring(i);
-                break;
+              currentText += raw.substring(i);
+              break;
             }
-
-            const linkContent = raw.substring(linkStart, linkEnd);
-            const trimmedLinkContent = linkContent.trim();
-const match = trimmedLinkContent.match(/^(.*?)\s*\(\s*(.*?)\s*\)\s*$/);
-
-
-
-            if (!match) {
-                // If invalid link syntax, treat as formatted markdown text
-                result.push(<span key={`text-${key++}`}>{formatMarkdown(linkContent)}</span>);
-                i = linkEnd + 7;
-                continue;
+          
+            const linkContent = raw.substring(linkStart, linkEnd).trim();
+          console.log(`linkContent: ${linkContent}`);
+          const linkParts = linkContent.split('&');
+          const linkTitle = linkParts[0].trim();
+          const linkUrl = linkParts[1] ? linkParts[1].trim() : '#';
+            // // Match format like: title `url`
+            // const match = linkContent.match(/^(.+?)\s+`(.+?)`$/);
+          
+            if (linkTitle && linkUrl) {
+              result.push(<ExternalLink key={`link-${key++}`} title={linkTitle.trim()} link={linkUrl.trim()} />);
+            } else {
+              // Fallback: push raw content if formatting doesn't match
+              currentText += raw.substring(i, linkEnd + 7);
             }
-            
-
-            const linkTitle = match[1].trim();
-            const linkUrl = match[2].trim();
-
-            result.push(<ExternalLink key={`link-${key++}`} title={linkTitle} link={linkUrl} />);
+          
             i = linkEnd + 7;
-        } else if (raw.substring(i, i + 6) === '[bold]') {
+          }
+                             
+         else if (raw.substring(i, i + 6) === '[bold]') {
             if (currentText) {
                 result.push(<span key={`text-${key++}`}>{formatMarkdown(currentText)}</span>);
                 currentText = '';
