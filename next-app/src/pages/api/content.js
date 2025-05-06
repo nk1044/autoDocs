@@ -9,14 +9,18 @@ function getFileData(dirPath) {
 // http://localhost:3000/api/content?fileName=test.md
 export default function handler(req, res) {
     const baseDir = path.resolve('src/data');
-    console.log(baseDir);
-    const fileName = req.query.fileName;
-    const filePath = path.join(baseDir, fileName);
-
-    try {
-        const data = getFileData(filePath);
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to read File' });
+    const fullPath = req.query.fullPath;
+  
+    if (!fullPath) {
+      return res.status(400).json({ error: 'Missing fullPath query parameter' });
     }
-}
+  
+    const filePath = path.join(baseDir, fullPath);
+  
+    try {
+      const data = fs.readFileSync(filePath, 'utf-8');
+      res.status(200).json({ content: data });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to read file' });
+    }
+  }
