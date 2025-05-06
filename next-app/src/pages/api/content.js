@@ -20,7 +20,7 @@ function FormatData(data, fullPath = "doc") {
           codeBlock = {
             type: "CodeBlock",
             content: "",
-            language: line.slice(3).trim() || undefined,
+            language: line.slice(3) || undefined,
           };
         } else {
           FormattedData.push({ ...codeBlock });
