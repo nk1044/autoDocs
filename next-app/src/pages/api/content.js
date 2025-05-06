@@ -6,7 +6,7 @@ function getFileData(dirPath) {
     const data = fs.readFileSync(dirPath, 'utf-8');
     return data;
 }
-
+// http://localhost:3000/api/content?fileName=test.md
 export default function handler(req, res) {
     const baseDir = path.resolve('src/data');
     console.log(baseDir);
