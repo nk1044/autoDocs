@@ -1,5 +1,8 @@
 import Layout from "@/utils/components/Layout";
 import Docs from "@/utils/components/Docs";
+// import { getSidebarData } from "@/pages/api/sidebarData";
+// import { getContent } from "@/pages/api/content";
+// import { getAllPaths } from "@/pages/api/allpaths";
 
 export default function DocsPage({ sidebarData, content }) {
   return (
