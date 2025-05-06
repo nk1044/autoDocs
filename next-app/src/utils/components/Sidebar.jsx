@@ -1,25 +1,26 @@
-// components/SideBar.js
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Folder, FolderOpen, File } from 'lucide-react';
 
-function SideBarItem({ item, level = 0, activePath }) {
+function SideBarItem({ item, level = 0, activePath, parentPath = '' }) {
+
+  const currentPath = `${parentPath}/${item.name}`;
+
   const isInActivePath = (item, currentPath) => {
-    if (item.path === currentPath) return true;
+    if (currentPath === activePath) return true;
     if (item.children) {
-      return item.children.some(child => isInActivePath(child, currentPath));
+      return item.children.some(child => isInActivePath(child, `${currentPath}/${child.name}`));
     }
     return false;
   };
 
   const [isExpanded, setIsExpanded] = useState(() => {
-    const hasActiveChild = item.children && isInActivePath(item, activePath);
-    return hasActiveChild;
+    return isInActivePath(item, currentPath);
   });
 
   useEffect(() => {
-    if (item.children && isInActivePath(item, activePath)) {
+    if (isInActivePath(item, currentPath)) {
       setIsExpanded(true);
     }
   }, [activePath, item]);
@@ -37,7 +38,7 @@ function SideBarItem({ item, level = 0, activePath }) {
       {hasChildren ? (
         <div
           onClick={toggleFolder}
-          className={`flex items-center cursor-pointer px-3 py-1.5 rounded-sm transition-all 
+          className={`flex items-center cursor-pointer px-3 py-1.5 rounded-sm transition-all
             hover:bg-neutral-800 hover:text-orange-400
             ${isExpanded ? 'text-orange-400' : 'text-neutral-300'}
           `}
@@ -48,32 +49,32 @@ function SideBarItem({ item, level = 0, activePath }) {
           ) : (
             <Folder size={iconSize} className="mr-2" />
           )}
-          <span>{item.title}</span>
+          <span>{item.name}</span>
         </div>
       ) : (
-        <Link href={`/docs/${item.path}`} passHref legacyBehavior>
-          <a
-            className={`
-              flex items-center px-3 py-1.5 rounded-sm transition-all
-              ${activePath === item.path
-                ? 'bg-orange-950 text-orange-400'
-                : 'text-neutral-300 hover:bg-neutral-800 hover:text-orange-400'
-              }`}
-            style={{ paddingLeft }}
-          >
-            <File size={iconSize} className="mr-2" />
-            <span>{item.title}</span>
-          </a>
+        <Link
+          href={`/docs${currentPath}`}
+          className={`
+            flex items-center px-3 py-1.5 rounded-sm transition-all
+            ${activePath === currentPath
+              ? 'bg-orange-950 text-orange-400'
+              : 'text-neutral-300 hover:bg-neutral-800 hover:text-orange-400'
+            }`}
+          style={{ paddingLeft }}
+        >
+          <File size={iconSize} className="mr-2" />
+          <span>{item.name.replace(/\.md$/, '')}</span>
         </Link>
       )}
       {isExpanded && hasChildren && (
         <div className="flex flex-col">
           {item.children.map((child, index) => (
             <SideBarItem 
-              key={child.path + index} 
+              key={child.name + index} 
               item={child} 
               level={level + 1} 
               activePath={activePath} 
+              parentPath={currentPath}
             />
           ))}
         </div>
@@ -84,7 +85,7 @@ function SideBarItem({ item, level = 0, activePath }) {
 
 export default function SideBar({ sidebarData }) {
   const router = useRouter();
-  const activePath = router.asPath.split('/docs/')[1] || '';
+  const activePath = router.asPath.split('/docs/')[1] || ''; // Extract active path from URL
 
   return (
     <div className="flex flex-col h-full w-64 bg-black border-r border-neutral-800 text-white overflow-auto p-2">
@@ -93,12 +94,12 @@ export default function SideBar({ sidebarData }) {
       </div>
       {sidebarData && sidebarData.map((item, index) => (
         <SideBarItem 
-          key={item.path + index} 
+          key={item.name + index} 
           item={item} 
           activePath={activePath} 
+          parentPath=""
         />
       ))}
     </div>
   );
 }
-
