@@ -1,5 +1,29 @@
 import React, { useState, useEffect } from 'react';
 
+
+const AsideBar = (markdownContent, path) => {
+    const lines = markdownContent.split('\n');
+    let inCodeBlock = false;
+    const headings = [];
+  
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+  
+      if (line.trim().startsWith('```')) {
+        inCodeBlock = !inCodeBlock;
+        continue;
+      }
+  
+      if (!inCodeBlock && /^#{1}\s+/.test(line)) {
+        const headingText = line.replace(/^#{1}\s+/, '').trim();
+        const id = generateHeadingId(headingText, path);
+        headings.push({ Title: headingText, ID: id });
+      }
+    }
+  
+    return headings;
+  };
+
 function Docs({fullPath}) {
   console.log('fullPath', fullPath);
   
