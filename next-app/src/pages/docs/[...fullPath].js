@@ -19,15 +19,13 @@ export async function getStaticProps(context) {
   const sidebarData = await resSidebar.json();
 
   const resContent = await fetch(`http://localhost:3000/api/content?fullPath=${encodeURIComponent(fullPathStr)}`);
-  const contentJson = await resContent.json();
-  const content = contentJson.content;
-
-  // console.log("Content:", content);
+  const content = await resContent.json();
+  
   
   return {
     props: {
       sidebarData,
-      content,
+      content: content.content ,
     },
   };
 }
