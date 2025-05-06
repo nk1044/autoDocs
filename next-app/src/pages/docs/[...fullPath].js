@@ -13,12 +13,12 @@ export async function getStaticProps(context) {
   const { fullPath } = context.params;
   const fullPathStr = fullPath.join("/");
   // console.log("Full path str:", fullPathStr);
-  
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
-  const resSidebar = await fetch("http://localhost:3000/api/sidebarData");
+  const resSidebar = await fetch(`${baseUrl}/api/sidebarData`);
   const sidebarData = await resSidebar.json();
 
-  const resContent = await fetch(`http://localhost:3000/api/content?fullPath=${encodeURIComponent(fullPathStr)}`);
+  const resContent = await fetch(`${baseUrl}/api/content?fullPath=${encodeURIComponent(fullPathStr)}`);
   const content = await resContent.json();
   
   
@@ -31,7 +31,8 @@ export async function getStaticProps(context) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch("http://localhost:3000/api/allpaths");
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const res = await fetch(`${baseUrl}/api/allpaths`);
   const pathsArray = await res.json();
   // console.log("Paths array:", pathsArray);
   
