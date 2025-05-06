@@ -6,8 +6,8 @@ function getFileTree(dirPath) {
   const items = fs.readdirSync(dirPath, { withFileTypes: true });
 
   return items.map((item) => {
-    const fullPath = path.join(dirPath, item.name);
-
+    const fullPath = path.join(dirPath, item.name)
+    
     if (item.isDirectory()) {
       return {
         name: item.name,
@@ -24,8 +24,9 @@ function getFileTree(dirPath) {
 }
 
 export default function handler(req, res) {
-  const baseDir = path.join(process.cwd(), 'data');
-
+  const baseDir = path.resolve('src/data');
+  console.log(baseDir);
+  
   try {
     const tree = getFileTree(baseDir);
     res.status(200).json(tree);
