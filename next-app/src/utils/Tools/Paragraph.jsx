@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatText } from './Formtter'
+import { formatText } from '@/utils/Tools/Formtter';
 
 function Paragraph({ Text }) {
   // Use the enhanced formatText function which now handles Markdown formatting

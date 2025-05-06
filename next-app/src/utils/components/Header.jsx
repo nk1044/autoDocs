@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Search, Moon, Sun, Menu } from 'lucide-react';
-
+import { useRouter } from 'next/router';
 
 function Header({ sidebarOpen, setSidebarOpen }) {
   const [dark, setDark] = useState(true);
-
+  const router = useRouter();
 
   return (
     <div className="w-full pt-2 mb-2">
@@ -23,7 +23,7 @@ function Header({ sidebarOpen, setSidebarOpen }) {
           {/* Logo */}
           <div
             className="flex items-center gap-2 cursor-pointer"
-            onClick={() => console.log('Logo clicked')
+            onClick={() => router.push('/docs')
             }
           >
             <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">

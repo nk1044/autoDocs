@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatText } from './Formtter';
+import { formatText } from '@/utils/Tools/Formtter';
 import { Table } from 'lucide-react';
 
 function TableBlock({ headers, rows, title }) {

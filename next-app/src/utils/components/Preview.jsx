@@ -9,7 +9,7 @@ function Preview({Content}) {
     if (!Content) {
         return <h1>Page Data Not Available</h1>
     }
-    console.log("Preview Content:", Content);
+    // console.log("Preview Content:", Content);
     
     return (
         <div className='flex flex-col mt-2 gap-2'>

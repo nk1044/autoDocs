@@ -1,10 +1,26 @@
-import React, { useState } from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import React, { useState, useEffect } from 'react';
 import { Copy, Check, Code } from 'lucide-react';
 
+// Import syntax highlighter with dynamic loading to avoid hydration issues
 const CodeBlock = ({ code, language = "javascript" }) => {
   const [copied, setCopied] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [SyntaxHighlighter, setSyntaxHighlighter] = useState(null);
+  const [codeStyle, setCodeStyle] = useState(null);
+
+  // Only load the syntax highlighter on the client side
+  useEffect(() => {
+    const loadHighlighter = async () => {
+      const SyntaxHighlighterModule = await import('react-syntax-highlighter');
+      const styleModule = await import('react-syntax-highlighter/dist/esm/styles/prism/one-dark');
+      
+      setSyntaxHighlighter(() => SyntaxHighlighterModule.Prism);
+      setCodeStyle(styleModule.default);
+      setMounted(true);
+    };
+    
+    loadHighlighter();
+  }, []);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(code);
@@ -39,24 +55,31 @@ const CodeBlock = ({ code, language = "javascript" }) => {
         </div>
       </div>
 
-      {/* Code content - fully expanded */}
-      <div>
-        <SyntaxHighlighter
-          language={language}
-          style={vscDarkPlus}
-          customStyle={{ 
-            margin: 0, 
-            padding: '1.5rem', 
-            background: 'transparent',
-            fontSize: '0.9rem',
-            lineHeight: '1.5',
-          }}
-          codeTagProps={{ className: 'font-mono' }}
-          showLineNumbers={true}
-          lineNumberStyle={{ opacity: 0.4, minWidth: '2.5em', paddingRight: '1em', userSelect: 'none' }}
-        >
-          {code}
-        </SyntaxHighlighter>
+      {/* Code content */}
+      <div className="p-6 font-mono text-sm text-gray-300 overflow-x-auto">
+        {mounted && SyntaxHighlighter ? (
+          <SyntaxHighlighter
+            language={language}
+            style={codeStyle}
+            customStyle={{ 
+              margin: 0, 
+              padding: '0', 
+              background: 'transparent',
+              fontSize: '0.9rem',
+              lineHeight: '1.5',
+            }}
+            codeTagProps={{ className: 'font-mono' }}
+            showLineNumbers={true}
+            lineNumberStyle={{ opacity: 0.4, minWidth: '2.5em', paddingRight: '1em', userSelect: 'none' }}
+          >
+            {code}
+          </SyntaxHighlighter>
+        ) : (
+          // Fallback display when component is rendering on the server or loading on client
+          <pre className="whitespace-pre-wrap break-words">
+            <code>{code}</code>
+          </pre>
+        )}
       </div>
 
       {/* Footer with subtle branding */}

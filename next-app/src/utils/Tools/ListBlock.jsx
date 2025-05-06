@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatText } from './Formtter.jsx';
+import { formatText } from '@/utils/Tools/Formtter';
 import { List as ListIcon } from 'lucide-react';
 
 function ListBlock({
