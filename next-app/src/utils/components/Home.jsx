@@ -12,7 +12,7 @@ function Home() {
 
       {/* Hero Section */}
       <div className="max-w-3xl text-center my-16">
-        <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-6">Welcome to autoDocs</h1>
+        <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-6">Welcome to DocsWrite</h1>
         <p className="text-lg md:text-xl text-gray-400 leading-relaxed">
           A structured and well-organized documentation platform designed to help you explore, learn,
           and master various technologies, tools, and frameworks. Whether you're a beginner or an expert,
@@ -37,7 +37,7 @@ function Home() {
 
       {/* Features Section */}
       <div id="features" className="w-full max-w-6xl mx-auto py-16">
-        <h2 className="text-3xl font-bold text-white text-center mb-12">Why autoDocs?</h2>
+        <h2 className="text-3xl font-bold text-white text-center mb-12">Why docsWrite?</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             {

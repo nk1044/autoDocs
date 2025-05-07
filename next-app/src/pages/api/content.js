@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 
-function FormatData(data, fullPath = "doc") {
+function FormatData(data, fullPath = "docs") {
     const FormattedData = [];
     const lines = data.split('\n');
   
@@ -12,7 +12,7 @@ function FormatData(data, fullPath = "doc") {
     let listLines = [];
   
     while (i < lines.length) {
-      const line = lines[i].trim();
+      const line = lines[i];
   
       // --- Code block ---
       if (line.startsWith("```")) {

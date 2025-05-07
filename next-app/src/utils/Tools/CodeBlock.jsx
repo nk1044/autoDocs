@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Copy, Check, Code } from 'lucide-react';
 
 // Import syntax highlighter with dynamic loading to avoid hydration issues
-const CodeBlock = ({ code, language = "javascript" }) => {
+const CodeBlock = ({ code, language = "bash" }) => {
   const [copied, setCopied] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [SyntaxHighlighter, setSyntaxHighlighter] = useState(null);
