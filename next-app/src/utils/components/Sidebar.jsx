@@ -4,13 +4,14 @@ import { useRouter } from 'next/router';
 import { Folder, FolderOpen, File } from 'lucide-react';
 
 function SideBarItem({ item, level = 0, activePath, parentPath = '' }) {
-
   const currentPath = `${parentPath}/${item.name}`;
 
   const isInActivePath = (item, currentPath) => {
     if (currentPath === activePath) return true;
     if (item.children) {
-      return item.children.some(child => isInActivePath(child, `${currentPath}/${child.name}`));
+      return item.children.some(child =>
+        isInActivePath(child, `${currentPath}/${child.name}`)
+      );
     }
     return false;
   };
@@ -38,9 +39,11 @@ function SideBarItem({ item, level = 0, activePath, parentPath = '' }) {
       {hasChildren ? (
         <div
           onClick={toggleFolder}
-          className={`flex items-center cursor-pointer px-3 py-1.5 rounded-sm transition-all
-            hover:bg-neutral-800 hover:text-orange-400
-            ${isExpanded ? 'text-orange-400' : 'text-neutral-300'}
+          className={`
+            flex items-center cursor-pointer px-3 py-1.5 rounded-sm transition-all
+            dark:hover:bg-neutral-800 hover:bg-[#e6dbcf]
+            dark:hover:text-orange-400 hover:text-[#7b3f00]
+            ${isExpanded ? 'dark:text-orange-400 text-[#7b3f00]' : 'dark:text-neutral-300 text-neutral-700'}
           `}
           style={{ paddingLeft }}
         >
@@ -57,8 +60,8 @@ function SideBarItem({ item, level = 0, activePath, parentPath = '' }) {
           className={`
             flex items-center px-3 py-1.5 rounded-sm transition-all
             ${activePath === currentPath
-              ? 'bg-orange-950 text-orange-400'
-              : 'text-neutral-300 hover:bg-neutral-800 hover:text-orange-400'
+              ? 'dark:bg-orange-950 dark:text-orange-400 bg-[#e3c3a3] text-[#7b3f00]'
+              : 'dark:text-neutral-300 text-neutral-700 dark:hover:bg-neutral-800 hover:bg-[#e6dbcf] dark:hover:text-orange-400 hover:text-[#7b3f00]'
             }`}
           style={{ paddingLeft }}
         >
@@ -69,11 +72,11 @@ function SideBarItem({ item, level = 0, activePath, parentPath = '' }) {
       {isExpanded && hasChildren && (
         <div className="flex flex-col">
           {item.children.map((child, index) => (
-            <SideBarItem 
-              key={child.name + index} 
-              item={child} 
-              level={level + 1} 
-              activePath={activePath} 
+            <SideBarItem
+              key={child.name + index}
+              item={child}
+              level={level + 1}
+              activePath={activePath}
               parentPath={currentPath}
             />
           ))}
@@ -85,18 +88,18 @@ function SideBarItem({ item, level = 0, activePath, parentPath = '' }) {
 
 export default function SideBar({ sidebarData }) {
   const router = useRouter();
-  const activePath = router.asPath.split('/docs/')[1] || ''; // Extract active path from URL
+  const activePath = router.asPath.split('/docs/')[1] || '';
 
   return (
-    <div className="flex flex-col h-full w-64 bg-black border-r border-neutral-800 text-white overflow-auto p-2">
-      <div className="text-sm font-semibold text-neutral-500 px-3 mb-2 tracking-wide uppercase">
+    <div className="flex flex-col h-full w-64 dark:bg-black bg-[#f6f1eb] dark:border-neutral-800 border-[#d6c8b9] text-white dark:text-white text-neutral-800 overflow-auto p-2">
+      <div className="text-sm font-semibold dark:text-neutral-500 text-neutral-500 px-3 mb-2 tracking-wide uppercase">
         Sidebar
       </div>
       {sidebarData && sidebarData.map((item, index) => (
-        <SideBarItem 
-          key={item.name + index} 
-          item={item} 
-          activePath={activePath} 
+        <SideBarItem
+          key={item.name + index}
+          item={item}
+          activePath={activePath}
           parentPath=""
         />
       ))}

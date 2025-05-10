@@ -12,7 +12,11 @@ const CodeBlock = ({ code, language = "bash" }) => {
   useEffect(() => {
     const loadHighlighter = async () => {
       const SyntaxHighlighterModule = await import('react-syntax-highlighter');
-      const styleModule = await import('react-syntax-highlighter/dist/esm/styles/prism/one-dark');
+      const isDark = document.documentElement.classList.contains('dark');
+
+      const styleModule = isDark
+        ? await import('react-syntax-highlighter/dist/esm/styles/prism/one-dark')
+        : await import('react-syntax-highlighter/dist/esm/styles/prism/one-light');
       
       setSyntaxHighlighter(() => SyntaxHighlighterModule.Prism);
       setCodeStyle(styleModule.default);
@@ -29,23 +33,23 @@ const CodeBlock = ({ code, language = "bash" }) => {
   };
 
   return (
-    <div className="relative bg-neutral-950 border border-gray-800 rounded-xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:border-gray-700">
+    <div className="relative dark:bg-neutral-950 bg-[#f8f5f1] border dark:border-gray-800 border-[#d6c8b9] rounded-xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl dark:hover:border-gray-700 hover:border-[#c2b3a2]">
       {/* Header */}
       <div className="relative">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neutral-700 via-neutral-600 to-neutral-700" />
-        <div className="flex justify-between items-center px-5 py-3 bg-neutral-950 border-b border-neutral-800 backdrop-blur-sm">
+        <div className="absolute top-0 left-0 w-full h-1 dark:bg-gradient-to-r dark:from-neutral-700 dark:via-neutral-600 dark:to-neutral-700 bg-gradient-to-r from-[#dfd4c7] via-[#d3c7b8] to-[#dfd4c7]" />
+        <div className="flex justify-between items-center px-5 py-3 dark:bg-neutral-950 bg-[#f6f1eb] border-b dark:border-neutral-800 border-[#e0d8cd] backdrop-blur-sm">
           <div className="flex items-center gap-2">
-            <Code size={18} className="text-gray-400" />
-            <span className="text-sm text-gray-300 font-medium capitalize tracking-wide">
+            <Code size={18} className="dark:text-gray-400 text-[#7b3f00]" />
+            <span className="text-sm dark:text-gray-300 text-[#4a2d12] font-medium capitalize tracking-wide">
               {language}
             </span>
           </div>
           <button
             onClick={copyToClipboard}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${
-              copied 
-                ? "bg-green-500/20 text-green-300 border border-green-500/30" 
-                : "bg-gray-800 text-gray-300 border border-gray-700 hover:bg-gray-700 hover:border-gray-600"
+              copied
+                ? "bg-green-500/20 text-green-600 border border-green-500/30"
+                : "dark:bg-gray-800 bg-[#e9e1d7] dark:text-gray-300 text-[#4a2d12] dark:border-gray-700 border-[#d1c3b3] hover:dark:bg-gray-700 hover:bg-[#e0d8cd] hover:dark:border-gray-600 hover:border-[#c2b3a2]"
             }`}
             aria-label="Copy code"
           >
@@ -56,7 +60,7 @@ const CodeBlock = ({ code, language = "bash" }) => {
       </div>
 
       {/* Code content */}
-      <div className="p-6 font-mono text-sm text-gray-300 overflow-x-auto">
+      <div className="p-6 font-mono text-sm dark:text-gray-300 text-[#3b3028] overflow-x-auto">
         {mounted && SyntaxHighlighter ? (
           <SyntaxHighlighter
             language={language}
@@ -83,7 +87,7 @@ const CodeBlock = ({ code, language = "bash" }) => {
       </div>
 
       {/* Footer with subtle branding */}
-      <div className="flex justify-end items-center py-2 px-4 bg-neutral-950 border-t border-neutral-800 text-xs text-gray-500">
+      <div className="flex justify-end items-center py-2 px-4 dark:bg-neutral-950 bg-[#f6f1eb] border-t dark:border-neutral-800 border-[#e0d8cd] text-xs tdark:text-gray-500 text-[#7b3f00]">
         <span className="opacity-60 tracking-wide">Code Snippet</span>
       </div>
     </div>

@@ -1,7 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ExternalLink as ExternalLinkIcon } from 'lucide-react';
 
-function ExternalLink({ title = 'Link', link = '#' }) {
+function ExternalLink({
+  title = 'Link',
+  link = '#',
+  width = 200,
+  height = 125,
+  quality = 50,
+  isStatic = false,
+  imageSrc = ''
+}) {
   const [showPreview, setShowPreview] = useState(false);
   const [previewLoaded, setPreviewLoaded] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -9,87 +17,88 @@ function ExternalLink({ title = 'Link', link = '#' }) {
   const previewRef = useRef(null);
   const timerRef = useRef(null);
 
-  // Calculate preview position based on viewport
+  // Calculate Microlink preview image URL
+  const buildPreviewSrc = () => {
+    if (isStatic) return imageSrc;
+    const params = new URLSearchParams({
+      url: link,
+      screenshot: 'true',
+      meta: 'false',
+      embed: 'screenshot.url',
+      colorScheme: 'dark',
+      'viewport.isMobile': 'true',
+      'viewport.deviceScaleFactor': '1',
+      'viewport.width': width * 3,
+      'viewport.height': height * 3,
+    });
+    return `https://api.microlink.io/?${params.toString()}`;
+  };
+
+  // Get domain display
+  const displayUrl = () => {
+    try {
+      const url = new URL(link);
+      return url.hostname;
+    } catch {
+      return link;
+    }
+  };
+
+  // Get favicon
+  const getFaviconUrl = () => {
+    try {
+      const url = new URL(link);
+      return `https://www.google.com/s2/favicons?domain=${url.hostname}&sz=64`;
+    } catch {
+      return null;
+    }
+  };
+
+  // Update preview position
   useEffect(() => {
     if (showPreview && linkRef.current) {
       const rect = linkRef.current.getBoundingClientRect();
-      const previewWidth = 320;
-      const previewHeight = 200;
-      
-      // Center the preview horizontally with the link
+      const previewWidth = width + 40;
+      const previewHeight = height + 80;
+
       let xPos = rect.left + (rect.width / 2) - (previewWidth / 2);
-      
-      // Make sure it doesn't go off screen
-      if (xPos < 10) xPos = 10;
-      if (xPos + previewWidth > window.innerWidth - 10) {
-        xPos = window.innerWidth - previewWidth - 10;
-      }
-      
-      // Show preview below or above depending on available space
+      xPos = Math.max(10, Math.min(xPos, window.innerWidth - previewWidth - 10));
+
       const isOffScreenBottom = rect.bottom + previewHeight + 10 > window.innerHeight;
-      const yPos = isOffScreenBottom ? 
-        rect.top - previewHeight - 10 : 
-        rect.bottom + 10;
-      
+      const yPos = isOffScreenBottom ? rect.top - previewHeight - 10 : rect.bottom + 10;
+
       setPosition({ x: xPos, y: yPos });
     }
-  }, [showPreview]);
+  }, [showPreview, width, height]);
 
-  // Handle mouse events with delay
+  // Hover handlers
   const handleMouseEnter = () => {
-    timerRef.current = setTimeout(() => {
-      setShowPreview(true);
-    }, 500); // 500ms delay before showing preview
+    timerRef.current = setTimeout(() => setShowPreview(true), 400);
   };
 
   const handleMouseLeave = () => {
     clearTimeout(timerRef.current);
     setShowPreview(false);
+    setPreviewLoaded(false);
   };
 
-  // Clean up timer on unmount
   useEffect(() => {
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
+    return () => clearTimeout(timerRef.current);
   }, []);
 
-  // Handle clicks outside to dismiss preview
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (previewRef.current && !previewRef.current.contains(event.target) &&
-          !linkRef.current.contains(event.target)) {
+    const handleClickOutside = (e) => {
+      if (
+        previewRef.current &&
+        !previewRef.current.contains(e.target) &&
+        !linkRef.current.contains(e.target)
+      ) {
         setShowPreview(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  // Format the URL for display
-  const displayUrl = () => {
-    try {
-      const url = new URL(link);
-      return url.hostname;
-    } catch (e) {
-      return link;
-    }
-  };
-
-  // Get website icon/favicon
-  const getFaviconUrl = () => {
-    try {
-      const url = new URL(link);
-      return `https://www.google.com/s2/favicons?domain=${url.hostname}&sz=64`;
-    } catch (e) {
-      return null;
-    }
-  };
 
   return (
     <span className="relative inline-block">
@@ -107,64 +116,52 @@ function ExternalLink({ title = 'Link', link = '#' }) {
       </a>
 
       {showPreview && (
-        <div 
+        <div
           ref={previewRef}
-          className="fixed z-50 w-80 bg-gray-900 border border-gray-700 rounded-lg shadow-2xl overflow-hidden transition-opacity duration-300"
-          style={{ 
-            left: `${position.x}px`, 
+          className="fixed z-50 w-[220px] bg-gray-900 border border-gray-700 rounded-xl shadow-xl overflow-hidden"
+          style={{
+            left: `${position.x}px`,
             top: `${position.y}px`,
-            opacity: previewLoaded ? 1 : 0.9,
-            pointerEvents: 'none'
+            pointerEvents: 'none',
           }}
           onMouseEnter={() => setShowPreview(true)}
           onMouseLeave={handleMouseLeave}
         >
-          {/* Preview header */}
-          <div className="flex items-center gap-2 p-3 border-b border-gray-800 bg-gray-950">
+          {/* Header */}
+          <div className="flex items-center gap-2 p-2 border-b border-gray-800 bg-gray-950">
             {getFaviconUrl() && (
-              <img 
-                src={getFaviconUrl()} 
-                alt="Site icon" 
+              <img
+                src={getFaviconUrl()}
+                alt="Favicon"
                 className="w-4 h-4"
-                onError={(e) => e.target.style.display = 'none'}
+                onError={(e) => (e.target.style.display = 'none')}
               />
             )}
             <span className="text-gray-300 text-sm font-medium truncate">
               {displayUrl()}
             </span>
           </div>
-          
-          {/* Preview content - using static image instead of iframe */}
-          <div className="relative bg-gray-800 h-40 flex items-center justify-center">
-            {/* Loading skeleton */}
+
+          {/* Preview image */}
+          <div className="relative bg-gray-800" style={{ height }}>
             {!previewLoaded && (
-              <div className="absolute inset-0 bg-gray-800 flex flex-col items-center justify-center">
-                <div className="w-8 h-8 border-2 border-gray-600 border-t-blue-400 rounded-full animate-spin"></div>
+              <div className="absolute inset-0 bg-gray-800 flex items-center justify-center">
+                <div className="w-6 h-6 border-2 border-gray-600 border-t-blue-400 rounded-full animate-spin"></div>
               </div>
             )}
-            
-            {/* Preview image using API */}
             <img
-              src={`https://api.microlink.io/?url=${encodeURIComponent(link)}&screenshot&embed=screenshot.url&meta=false&overlay.browser=dark`}
+              src={buildPreviewSrc()}
+              width={width}
+              height={height}
               alt={`Preview of ${title}`}
               className="w-full h-full object-cover"
               onLoad={() => setPreviewLoaded(true)}
-              onError={() => {
-                // Fallback if microlink doesn't work
-                setPreviewLoaded(true);
-              }}
+              onError={() => setPreviewLoaded(true)}
             />
-            
-            {/* Simple text fallback if image fails */}
-            {previewLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-80">
-                <span className="text-sm text-gray-300">Visit {displayUrl()}</span>
-              </div>
-            )}
           </div>
-          
-          {/* Preview footer */}
-          <div className="flex justify-between items-center p-2 bg-gray-950 text-xs text-gray-400">
+
+          {/* Footer */}
+          <div className="flex justify-between items-center px-2 py-1 bg-gray-950 text-xs text-gray-400">
             <span className="truncate">{title}</span>
             <span>Preview</span>
           </div>

@@ -6,7 +6,7 @@ function Paragraph({ Text }) {
   const formattedText = formatText(Text);
 
   return (
-    <p className="text-lg text-neutral-300">
+    <p className="text-lg dark:text-neutral-300 text-neutral-700">
       {formattedText}
     </p>
   );

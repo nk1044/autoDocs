@@ -6,7 +6,7 @@ export default function Layout({ children, sidebarData }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen dark:bg-neutral-950 bg-[#f8f5f1] dark:text-white text-[#4a2d12]">
       <div className="flex-none z-10">
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       </div>
@@ -15,7 +15,9 @@ export default function Layout({ children, sidebarData }) {
         <div
           className={`
             fixed lg:static top-0 left-0 h-full w-64 z-40 transition-transform duration-300
-            bg-neutral-950 border-r border-neutral-800 overflow-y-auto
+            dark:bg-neutral-950 bg-[#f6f1eb]
+            dark:border-neutral-800 border-[#d6c8b9]
+            border-r overflow-y-auto
             ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
             lg:translate-x-0
           `}
@@ -30,7 +32,7 @@ export default function Layout({ children, sidebarData }) {
           />
         )}
 
-        <div className="flex-1 overflow-auto bg-neutral-900">
+        <div className="flex-1 overflow-auto dark:bg-neutral-900 bg-[#fcf8f5]">
           {children}
         </div>
       </div>

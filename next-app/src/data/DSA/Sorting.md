@@ -88,40 +88,24 @@ Insertion Sort is a simple and intuitive sorting algorithm that builds the sorte
 4. Repeat for all elements until the array is sorted.
 
 ```cpp
-#include<iostream>
-#include<vector>
-#include<algorithm>
 
-using namespace std;
-
-int main(){
-    vector<int> v(10, 0);
-    
-    cout << "Enter 10 elements:\n";
-    for(int i = 0; i < 10; i++){
-        cin >> v[i];
+void InsertionSort(vector<int>&nums){
+//pick an element and insert it in its right palce
+  for(int i=1;i<nums.size();i++){
+    int j=i-1;
+    while(j>=0 && nums[j]>nums[j+1]){
+      swap(nums[j+1], nums[j]);
+      j--;
     }
-    
-    for(int i = 1; i < 10; i++){
-        int j = i;
-        while(j > 0 && v[j] < v[j - 1]){
-            swap(v[j], v[j - 1]);
-            j--;
-        }
-    }
-    
-    cout << "Sorted array: ";
-    for(int i = 0; i < 10; i++){
-        cout << v[i] << " ";
-    }
-    return 0;
+    Print(nums);
+  }
 }
+
 ```
 
 ### Step-by-Step Explanation:
 
-* A vector `v` of size 10 is created to store input elements.
-* The user inputs 10 numbers into the vector.
+
 * The outer loop iterates over each element from index 1 to the end.
 * The inner loop shifts elements that are greater than the current element to the right.
 * The `swap()` function is used to place the current element in the correct position.
