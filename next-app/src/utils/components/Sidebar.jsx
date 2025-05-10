@@ -91,7 +91,7 @@ export default function SideBar({ sidebarData }) {
   const activePath = router.asPath.split('/docs/')[1] || '';
 
   return (
-    <div className="flex flex-col h-full w-64 dark:bg-black bg-[#f6f1eb] dark:border-neutral-800 border-[#d6c8b9] text-white dark:text-white text-neutral-800 overflow-auto p-2">
+    <div className="flex flex-col h-full w-64 dark:bg-black bg-[#f6f1eb] dark:border-neutral-800 border-[#d6c8b9] dark:text-white text-neutral-800 overflow-auto p-2">
       <div className="text-sm font-semibold dark:text-neutral-500 text-neutral-500 px-3 mb-2 tracking-wide uppercase">
         Sidebar
       </div>
