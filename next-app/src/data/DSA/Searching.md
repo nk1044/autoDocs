@@ -2,13 +2,11 @@
 
 Searching is a fundamental concept in computer science that involves finding a particular value or element within a data structure. The two main types of searching algorithms are: **Linear Search** and **Binary Search**.
 
----
-
 # Binary Search
 
 Binary search is an efficient searching algorithm that works on sorted arrays. It follows the divide-and-conquer approach by repeatedly dividing the search space in half until the target element is found or the search space is empty.
 
-### Binary Search Algorithm Steps:
+** Binary Search Algorithm Steps: **
 
 1. Find the middle element of the array.
 2. If the middle element is the target, return its index.
