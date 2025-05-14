@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Search, Moon, Sun, Menu } from 'lucide-react';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 function Header({ sidebarOpen, setSidebarOpen }) {
   const router = useRouter();
   const [dark, setDark] = useState(true);
+  const [search, setSearch] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchError, setSearchError] = useState(null);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   useEffect(() => {
     const isDark =
@@ -15,6 +20,39 @@ function Header({ sidebarOpen, setSidebarOpen }) {
     setDark(isDark);
     document.documentElement.classList.toggle('dark', isDark);
   }, []);
+
+  // Debounced search effect
+  useEffect(() => {
+    if (!search) return;
+
+    const timer = setTimeout(() => {
+      fetchData(search);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const fetchData = async (keyword) => {
+    setSearchLoading(true);
+    try {
+      const response = await axios.post('/api/search', { keyword });
+      setSearchResults(response.data.matches);
+      setSearchError(null);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setSearchError('Failed to fetch search results');
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleResultClick = (uniqueKey) => {
+    router.push(`/docs/${uniqueKey}`);
+  };
 
   const toggleTheme = () => {
     const newDark = !dark;
@@ -60,8 +98,46 @@ function Header({ sidebarOpen, setSidebarOpen }) {
           <input
             type="text"
             placeholder="Search documentation..."
+            value={search}
+            onChange={handleSearchChange}
             className="w-full dark:bg-black bg-[#f2e7dc] dark:text-neutral-200 text-[#3b2e26] pl-10 pr-4 py-2 rounded-3xl border dark:border-neutral-800 border-[#d4c2b2] focus:outline-none focus:ring-2 dark:focus:ring-black dark:placeholder-neutral-500 placeholder-[#6d5444] text-sm transition-all"
           />
+          {/* Search Results Dropdown */}
+          {(search || searchError) && (
+            <div className="absolute z-10 w-full bg-white dark:bg-neutral-800 shadow-lg rounded-xl mt-2 border dark:border-neutral-700 border-[#d4c2b2] overflow-hidden">
+              {searchLoading ? (
+                <div className="px-4 py-3 text-sm text-neutral-500 dark:text-neutral-400">
+                  Searching...
+                </div>
+              ) : searchError ? (
+                <div className="px-4 py-3 text-sm text-red-600 dark:text-red-400">
+                  {searchError}
+                </div>
+              ) : searchResults.length === 0 ? (
+                <div className="px-4 py-3 text-sm text-neutral-500 dark:text-neutral-400">
+                  No results found.
+                </div>
+              ) : (
+                searchResults.map((result) => (
+                  <div
+                    key={result.uniqueKey}
+                    onClick={() => handleResultClick(result.uniqueKey)}
+                    className="cursor-pointer px-4 py-2 hover:bg-[#f5f2ee] dark:hover:bg-neutral-700 transition-colors duration-200"
+                  >
+                    <div className="font-medium dark:text-white text-[#3b2e26]">
+                      {result.name}
+                    </div>
+                    {result.snippet && (
+                      <div className="text-sm text-neutral-500 dark:text-neutral-400">
+                        {result.snippet}
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+
         </div>
 
         {/* Right: Icons */}
