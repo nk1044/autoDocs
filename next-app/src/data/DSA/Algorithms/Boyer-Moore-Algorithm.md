@@ -1,6 +1,6 @@
 # Boyer-Moore Voting Algorithm
 
-The **Boyer-Moore Voting Algorithm## is a powerful and efficient method used to find the **majority element## in a sequence. A **majority element## is an element that appears more than ⌊n / 2⌋ times in an array of size `n`. This algorithm runs in **O(n)## time with **O(1)## space, making it very efficient.
+The **Boyer-Moore Voting Algorithm** is a powerful and efficient method used to find the **majority element** in a sequence. A **majority element** is an element that appears more than ⌊n / 2⌋ times in an array of size `n`. This algorithm runs in **O(n)** time with **O(1)** space, making it very efficient.
 
 
 # Algorithm Intuition
@@ -78,7 +78,7 @@ Candidate = 2, check if count of 2 > 3 → Yes → return 2
 
 ## Rule of Thumb: 
 
-## At most k - 1 elements can appear more than ⌊n / k⌋ times in an array of size `n`.
+** At most k - 1 elements can appear more than ⌊n / k⌋ times in an array of size `n`. **
 
 ## Examples: 
 
