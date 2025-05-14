@@ -4,14 +4,14 @@ Kubernetes (K8s) is an open-source platform for automating deployment, scaling, 
 # Kubernetes Architecture
 Kubernetes follows a master-worker architecture with the following components:
 
-**Control Plane Components**
+## Control Plane Components
 1. `Kube-API Server` - User interaction interface.
 2. `etcd` - Key-value store for cluster data.
 3. `Controller Manager` - Handles controllers for nodes, endpoints, etc.
 4. `Scheduler` - Assigns workloads to worker nodes.
 5. `Cloud Controller Manager` - Manages cloud provider-specific components.
 
-**Worker Node Components**
+## Worker Node Components
 1. `Kubelet` - Ensures containers are running in pods.
 2. `Kube Proxy` - Manages network rules for pod communication.
 3. `CRI` - Manages container runtime.

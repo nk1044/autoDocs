@@ -7,7 +7,7 @@ A linked list is a linear data structure where elements are stored in nodes. Eac
 
 A linked list is a data structure where elements (nodes) are linked together using pointers. Each node consists of a data field and a pointer to the next node in the list. The given C++ program demonstrates how to create a singly linked list from a vector.
 
-** Working Principle **
+## Working Principle 
 
 1. A class `Node` is defined with an integer data field and a pointer to the next node.
 2. A constructor initializes each node with a given value and a pointer (defaulted to `nullptr`).
@@ -17,7 +17,7 @@ A linked list is a data structure where elements (nodes) are linked together usi
 6. The main function initializes a vector and calls `createlst()` to build the linked list.
 7. A loop traverses the linked list, printing each node’s value.
 
-** Code **
+## Code 
 
 ```cpp
 class Node {
@@ -45,14 +45,14 @@ Node* createlst(vector<int> &a) {
 }
 ````
 
-** Explanation of the Code **
+## Explanation of the Code 
 
-* **Node Class:** Defines the structure of a node in the linked list with data and a pointer.
-* **Constructor:** Initializes the node with a given value and a default next pointer.
-* **createlst Function:** Iterates through the vector and links each node to form a linked list.
-* **Main Function:** Calls `createlst()` and traverses the linked list to print all elements.
+* **Node Class:## Defines the structure of a node in the linked list with data and a pointer.
+* **Constructor:## Initializes the node with a given value and a default next pointer.
+* **createlst Function:## Iterates through the vector and links each node to form a linked list.
+* **Main Function:## Calls `createlst()` and traverses the linked list to print all elements.
 
-** Time and Space Complexity Analysis **
+## Time and Space Complexity Analysis 
 
 | Operation                | Time Complexity | Reason                                                       |
 | ------------------------ | --------------- | ------------------------------------------------------------ |
@@ -66,7 +66,7 @@ Since the linked list is created dynamically using `new`, the space complexity i
 
 This code implements a singly linked list with two primary operations: converting an array into a linked list and deleting nodes with a specific value. It demonstrates the use of dynamic memory allocation and pointer manipulation in C++.
 
-** Code **
+## Code 
 
 ```cpp
 Node* deleteNode(Node* head, int a) {
@@ -87,14 +87,14 @@ Node* deleteNode(Node* head, int a) {
 }
 ```
 
-** Time and Space Complexity **
+## Time and Space Complexity 
 
 | Operation                    | Time Complexity | Space Complexity |
 | ---------------------------- | --------------- | ---------------- |
-| Convert array to linked list | **O(n)**        | **O(n)**         |
-| Delete specific value nodes  | **O(n)**        | **O(1)**         |
+| Convert array to linked list | **O(n)##        | **O(n)##         |
+| Delete specific value nodes  | **O(n)##        | **O(1)##         |
 
-** Explanation of Complexity **
+## Explanation of Complexity 
 
-* **Convert array to linked list:** Each element in the array is iterated over once and allocated dynamically, making it O(n) time and space complexity.
-* **Delete specific value nodes:** Each node is traversed once, so the time complexity is O(n). Space complexity is O(1) because we only use a few additional pointers and do not allocate extra memory apart from the modified list.
+* **Convert array to linked list:## Each element in the array is iterated over once and allocated dynamically, making it O(n) time and space complexity.
+* **Delete specific value nodes:## Each node is traversed once, so the time complexity is O(n). Space complexity is O(1) because we only use a few additional pointers and do not allocate extra memory apart from the modified list.

@@ -1,6 +1,6 @@
 # Boyer-Moore Voting Algorithm
 
-The **Boyer-Moore Voting Algorithm** is a powerful and efficient method used to find the **majority element** in a sequence. A **majority element** is an element that appears more than ⌊n / 2⌋ times in an array of size `n`. This algorithm runs in **O(n)** time with **O(1)** space, making it very efficient.
+The **Boyer-Moore Voting Algorithm## is a powerful and efficient method used to find the **majority element## in a sequence. A **majority element## is an element that appears more than ⌊n / 2⌋ times in an array of size `n`. This algorithm runs in **O(n)## time with **O(1)## space, making it very efficient.
 
 
 # Algorithm Intuition
@@ -76,18 +76,18 @@ Candidate = 2, check if count of 2 > 3 → Yes → return 2
 
 # Extended Concept: How Many Elements Can Appear More Than ⌊n/k⌋ Times?
 
-** Rule of Thumb: **
+## Rule of Thumb: 
 
-** At most **k - 1** elements can appear more than ⌊n / k⌋ times in an array of size `n`. **
+## At most k - 1 elements can appear more than ⌊n / k⌋ times in an array of size `n`.
 
-** Examples: **
+## Examples: 
 
 | Threshold       | Max elements possible |
 | --------------- | --------------------- |
-| More than ⌊n/2⌋ | **1** element         |
-| More than ⌊n/3⌋ | **2** elements        |
-| More than ⌊n/4⌋ | **3** elements        |
-| More than ⌊n/k⌋ | **k - 1** elements    |
+| More than ⌊n/2⌋ | **1## element         |
+| More than ⌊n/3⌋ | **2## elements        |
+| More than ⌊n/4⌋ | **3## elements        |
+| More than ⌊n/k⌋ | **k - 1## elements    |
 
 **Reason**: If `m` elements each appear more than ⌊n/k⌋ times, then:
 
@@ -95,7 +95,7 @@ Candidate = 2, check if count of 2 > 3 → Yes → return 2
 m * (⌊n/k⌋ + 1) ≤ n ⇒ m ≤ k - 1
 ```
 
-** Application **
+## Application 
 
-This idea helps when you're trying to find elements appearing more than ⌊n/3⌋ times — in that case, you can use a **modified Boyer-Moore algorithm** that tracks two candidates instead of one.
+This idea helps when you're trying to find elements appearing more than ⌊n/3⌋ times — in that case, you can use a **modified Boyer-Moore algorithm## that tracks two candidates instead of one.
 

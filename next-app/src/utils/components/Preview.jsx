@@ -4,6 +4,7 @@ import CodeBlock from '@/utils/Tools/CodeBlock';
 import ListBlock from '@/utils/Tools/ListBlock';
 import TableBlock from '@/utils/Tools/TableBlock';
 import Heading from '@/utils/Tools/Heading';
+import SubHeading from '@/utils/Tools/SubHeading';
 
 function Preview({Content}) {
     if (!Content) {
@@ -19,6 +20,9 @@ function Preview({Content}) {
                 } 
                 else if (item.type === "Heading") {
                     return <Heading key={index} Text={item.content} ID={item.id} />
+                }              
+                else if (item.type === "SubHeading") {
+                    return <SubHeading key={index} Text={item.content} />
                 }              
                 else if (item.type === "CodeBlock") {
                     return <CodeBlock key={index} code={item.content} language={item.language} />

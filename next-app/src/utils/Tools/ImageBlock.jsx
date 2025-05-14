@@ -1,18 +1,13 @@
 import React from 'react';
 import Image from 'next/image';
 
-function ImageBlock({ imgsrc, alt = 'Image', width = 600, height = 400 }) {
+function ImageBlock({ imgsrc, alt = 'Image'}) {
   return (
-    <div className="relative w-full max-w-[600px] mx-auto my-4 rounded-lg overflow-hidden shadow-lg">
-      <Image
-        src={imgsrc}
-        alt={alt}
-        width={width}
-        height={height}
-        className="w-full h-auto object-contain"
-        layout="responsive"
+      <img 
+      src={imgsrc} 
+      alt={alt}
+      className='w-full h-auto rounded-lg shadow-md'
       />
-    </div>
   );
 }
 

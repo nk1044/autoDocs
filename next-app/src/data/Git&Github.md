@@ -104,7 +104,7 @@ git remote add origin https://github.com/username/myrepo.git
 git push -u origin main
 ```
 
-** Git Best Practices **
+## Git Best Practices 
 
 1. Always write meaningful commit messages.
 2. Use feature branches for development.

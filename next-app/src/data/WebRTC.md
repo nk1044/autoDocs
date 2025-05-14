@@ -3,24 +3,24 @@
 WebRTC (Web Real-Time Communication) is a technology that enables **real-time audio, video, and data communication** directly between browsers and devices — **without needing plugins** or third-party software. Learn more [here](https://youtu.be/pGAp5rxv6II?si=vG8mYPWHS7zIj_Kl).
 
 
-** Main Features: **
+## Main Features: 
 
 * Real-time **video and audio calling**
 * **Peer-to-peer** data transfer
 * Built into browsers (Chrome, Firefox, Safari, etc.)
 
 
-** Key Components of WebRTC **
+## Key Components of WebRTC 
 
 | Component                               | Purpose                                                                           |
 | --------------------------------------- | --------------------------------------------------------------------------------- |
-| **Media Capture**                       | Captures user’s camera and microphone using `getUserMedia()`                      |
+| **Media Capture#**                      | Captures user’s camera and microphone using `getUserMedia()`                      |
 | **Peer Connection (RTCPeerConnection)** | Manages the direct connection between two peers                                   |
 | **Signaling**                           | Helps peers exchange connection information (offers, answers, and ICE candidates) |
 | **STUN/TURN Servers**                   | Help discover and traverse NAT/firewalls                                          |
 
 
-** WebRTC Protocol Stack **
+## WebRTC Protocol Stack 
 
 WebRTC uses several protocols under the hood:
 
@@ -28,12 +28,12 @@ WebRTC uses several protocols under the hood:
 | ----------------- | --------------- | -------------------------------------------------------------- |
 | **Transport**     | UDP / TCP       | Primary data transport (UDP preferred for low latency)         |
 | **NAT Traversal** | ICE, STUN, TURN | Help peers discover each other and punch through NAT/firewalls |
-| **Security**      | DTLS            | Encrypts communication (TLS over UDP)                          |
+| **Security#**     | DTLS            | Encrypts communication (TLS over UDP)                          |
 | **Media**         | SRTP            | Securely transmits audio/video                                 |
-| **Data**          | SCTP            | Used for reliable/unreliable data channels                     |
+| **Data#**         | SCTP            | Used for reliable/unreliable data channels                     |
 
 
-** WebRTC Connection Flow (Simple Steps) **
+## WebRTC Connection Flow (Simple Steps) 
 
 ```mermaid
 sequenceDiagram
@@ -53,12 +53,12 @@ User A-->>User B: P2P connection established (media/data)
 5. **Establish Peer Connection:** Media flows directly between peers (P2P).
 
 
-** Security **
+## Security 
 
 * WebRTC uses **DTLS** (Datagram Transport Layer Security) and **SRTP** (Secure RTP) to encrypt all communication.
 * Data channels are encrypted by default via **SCTP over DTLS**.
 
-** Summary: What You Need to Build a WebRTC App**
+## Summary: What You Need to Build a WebRTC App**
 
 1. A **signaling server** (e.g., with Socket.IO)
 2. Frontend logic to:

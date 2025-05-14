@@ -46,13 +46,13 @@ docker-compose up -d
 
 # Accessing MongoDB
 
-** MongoDB URI **
+## MongoDB URI
 
 ```plaintext
 mongodb://root:rootpassword@localhost:27017/
 ```
 
-** Access via CLI **
+## Access via CLI 
 
 You can connect to the MongoDB container using:
 

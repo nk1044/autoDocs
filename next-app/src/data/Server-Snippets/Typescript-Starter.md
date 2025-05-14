@@ -26,7 +26,7 @@ A lightweight and flexible `TypeScript starter` setup for backend development us
 
 # Setup
 
-** 1. Initialize the Project **
+## 1. Initialize the Project 
 
 ```bash
 mkdir backend
@@ -39,7 +39,7 @@ then run below command
 npm init -y
 ```
 
-** 2. Install Dev Dependencies **
+## 2. Install Dev Dependencies 
 
 ```bash
 npm install -D typescript ts-node ts-node-dev nodemon @types/node @types/express
@@ -52,7 +52,7 @@ npm install -D typescript ts-node ts-node-dev nodemon @types/node @types/express
 
 # File & Configuration Setup
 
-** 3. `tsconfig.json` **
+## 3. `tsconfig.json` 
 
 Create a `tsconfig.json` file to configure TypeScript:
 
@@ -70,7 +70,7 @@ Create a `tsconfig.json` file to configure TypeScript:
 }
 ```
 
-** 4. `nodemon.json` **
+## 4. `nodemon.json` 
 
 Create a `nodemon.json` to tell Nodemon how to run your app:
 
@@ -83,7 +83,7 @@ Create a `nodemon.json` to tell Nodemon how to run your app:
 ```
 
 
-** 5. `src/index.ts` **
+## 5. `src/index.ts` 
 
 Create the main entry file:
 
@@ -120,7 +120,7 @@ Update your `scripts` in `package.json`:
 * `npm run build` – Compile TypeScript to JavaScript
 * `npm start` – Run the compiled app from `dist/`
 
-** Run the app **
+## Run the app 
 
 # Start in development mode:
 

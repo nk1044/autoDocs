@@ -7,7 +7,7 @@ Sorting is a fundamental operation in computer science that involves arranging e
 
 Merge Sort is a divide-and-conquer sorting algorithm that splits an array into smaller subarrays, sorts them recursively, and then merges them back together. It is stable and guarantees O(n log n) performance in all cases.
 
-** Steps of Merge Sort:**
+## Steps of Merge Sort:**
 
 1. Divide: Split the array into two halves until each half contains a single element.
 2. Conquer: Recursively sort each half.
@@ -77,7 +77,7 @@ The Merge Sort algorithm follows a recursive approach. The array is split into t
 
 Insertion Sort is a simple and intuitive sorting algorithm that builds the sorted array one element at a time. It works similarly to how we sort playing cards in our hands. The algorithm iterates through the list and places each element in its correct position relative to the already sorted part of the array.
 
-** Working Principle:**
+## Working Principle:**
 
 1. Start with the second element (index 1) and compare it with the previous elements.
 2. If the current element is smaller than the previous ones, shift the larger elements to the right.
@@ -100,7 +100,7 @@ void InsertionSort(vector<int>&nums){
 
 ```
 
-** Step-by-Step Explanation:**
+## Step-by-Step Explanation:**
 
 
 * The outer loop iterates over each element from index 1 to the end.
@@ -113,25 +113,25 @@ void InsertionSort(vector<int>&nums){
 | Worst Case (Reverse Sorted Input) | O(n²)           |
 | Average Case                      | O(n²)           |
 
-* **Space Complexity:** **O(1)**, as no extra space is used apart from the input array.
+* **Space Complexity:## **O(1)**, as no extra space is used apart from the input array.
 
 
 # Radix Sort
 
-**Radix Sort** is a non-comparative integer sorting algorithm. It processes the digits of numbers from the least significant digit (LSD) to the most significant digit (MSD).
+**Radix Sort## is a non-comparative integer sorting algorithm. It processes the digits of numbers from the least significant digit (LSD) to the most significant digit (MSD).
 
-** Use Case **
+## Use Case 
 
 * Works best on integers or fixed-length strings.
 * Time complexity: `O(nk)` where `n` is number of elements and `k` is the number of digits.
 
-** How It Works: **
+## How It Works: 
 
 1. Find the maximum number to know the number of digits.
-2. Start from the least significant digit and use **Counting Sort** as a subroutine to sort by that digit.
+2. Start from the least significant digit and use **Counting Sort## as a subroutine to sort by that digit.
 3. Repeat for all digit positions.
 
-** Code Example (C++) **
+## Code Example (C++) 
 
 ```cpp
 #include <iostream>
@@ -184,21 +184,21 @@ int main() {
 
 # Bucket Sort
 
-**Bucket Sort** distributes elements into several "buckets", sorts each bucket (often with another sorting algorithm like insertion sort), and then concatenates them.
+**Bucket Sort## distributes elements into several "buckets", sorts each bucket (often with another sorting algorithm like insertion sort), and then concatenates them.
 
-** Use Case **
+## Use Case 
 
 * Best for uniformly distributed floating point numbers in \[0, 1).
 * Time complexity: `O(n + k)`, where `k` is the number of buckets (usually ≈ `n`).
 
-** How It Works:**
+## How It Works:**
 
 1. Create empty buckets.
 2. Distribute input numbers into buckets.
 3. Sort each bucket individually.
 4. Concatenate all buckets.
 
-** Code Example (C++) **
+## Code Example (C++) 
 
 ```cpp
 #include <iostream>

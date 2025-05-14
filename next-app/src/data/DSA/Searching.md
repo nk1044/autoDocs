@@ -1,12 +1,12 @@
 # Searching in DSA
 
-Searching is a fundamental concept in computer science that involves finding a particular value or element within a data structure. The two main types of searching algorithms are: **Linear Search** and **Binary Search**.
+Searching is a fundamental concept in computer science that involves finding a particular value or element within a data structure. The two main types of searching algorithms are: **Linear Search## and **Binary Search**.
 
 # Binary Search
 
 Binary search is an efficient searching algorithm that works on sorted arrays. It follows the divide-and-conquer approach by repeatedly dividing the search space in half until the target element is found or the search space is empty.
 
-** Binary Search Algorithm Steps: **
+## Binary Search Algorithm Steps: 
 
 1. Find the middle element of the array.
 2. If the middle element is the target, return its index.
@@ -37,4 +37,4 @@ int binarySearch(int value, int left, vector<int>& nums) {
 | Average Case                     | O(log n)        |
 | Worst Case (Element not found)   | O(log n)        |
 
-**Space Complexity:** O(1) for iterative binary search since it does not use extra space apart from variables. If a recursive approach is used, the space complexity becomes O(log n) due to recursive stack calls.
+**Space Complexity:## O(1) for iterative binary search since it does not use extra space apart from variables. If a recursive approach is used, the space complexity becomes O(log n) due to recursive stack calls.
