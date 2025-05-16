@@ -7,7 +7,7 @@ Sorting is a fundamental operation in computer science that involves arranging e
 
 Merge Sort is a divide-and-conquer sorting algorithm that splits an array into smaller subarrays, sorts them recursively, and then merges them back together. It is stable and guarantees O(n log n) performance in all cases.
 
-## Steps of Merge Sort:**
+## Steps of Merge Sort:
 
 1. Divide: Split the array into two halves until each half contains a single element.
 2. Conquer: Recursively sort each half.
@@ -113,7 +113,7 @@ void InsertionSort(vector<int>&nums){
 | Worst Case (Reverse Sorted Input) | O(n²)           |
 | Average Case                      | O(n²)           |
 
-* **Space Complexity:## **O(1)**, as no extra space is used apart from the input array.
+* **Space Complexity:** **O(1)**, as no extra space is used apart from the input array.
 
 
 # Radix Sort
@@ -188,7 +188,7 @@ int main() {
 
 ## Use Case 
 
-* Best for uniformly distributed floating point numbers in \[0, 1).
+* Best for uniformly distributed floating point numbers in [0, 1).
 * Time complexity: `O(n + k)`, where `k` is the number of buckets (usually ≈ `n`).
 
 ## How It Works:**
