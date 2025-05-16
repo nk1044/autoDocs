@@ -47,10 +47,10 @@ Node* createlst(vector<int> &a) {
 
 ## Explanation of the Code 
 
-* **Node Class:## Defines the structure of a node in the linked list with data and a pointer.
-* **Constructor:## Initializes the node with a given value and a default next pointer.
-* **createlst Function:## Iterates through the vector and links each node to form a linked list.
-* **Main Function:## Calls `createlst()` and traverses the linked list to print all elements.
+* **Node Class:** Defines the structure of a node in the linked list with data and a pointer.
+* **Constructor:** Initializes the node with a given value and a default next pointer.
+* **createlst Function:** Iterates through the vector and links each node to form a linked list.
+* **Main Function:** Calls `createlst()` and traverses the linked list to print all elements.
 
 ## Time and Space Complexity Analysis 
 
@@ -91,10 +91,10 @@ Node* deleteNode(Node* head, int a) {
 
 | Operation                    | Time Complexity | Space Complexity |
 | ---------------------------- | --------------- | ---------------- |
-| Convert array to linked list | **O(n)##        | **O(n)##         |
-| Delete specific value nodes  | **O(n)##        | **O(1)##         |
+| Convert array to linked list | **O(n)**        | **O(n)**         |
+| Delete specific value nodes  | **O(n)**        | **O(1)#**        |
 
 ## Explanation of Complexity 
 
-* **Convert array to linked list:## Each element in the array is iterated over once and allocated dynamically, making it O(n) time and space complexity.
-* **Delete specific value nodes:## Each node is traversed once, so the time complexity is O(n). Space complexity is O(1) because we only use a few additional pointers and do not allocate extra memory apart from the modified list.
+* **Convert array to linked list:** Each element in the array is iterated over once and allocated dynamically, making it O(n) time and space complexity.
+* **Delete specific value nodes:** Each node is traversed once, so the time complexity is O(n). Space complexity is O(1) because we only use a few additional pointers and do not allocate extra memory apart from the modified list.

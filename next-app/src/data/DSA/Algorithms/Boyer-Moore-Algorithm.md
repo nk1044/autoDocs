@@ -84,10 +84,10 @@ Candidate = 2, check if count of 2 > 3 → Yes → return 2
 
 | Threshold       | Max elements possible |
 | --------------- | --------------------- |
-| More than ⌊n/2⌋ | **1## element         |
-| More than ⌊n/3⌋ | **2## elements        |
-| More than ⌊n/4⌋ | **3## elements        |
-| More than ⌊n/k⌋ | **k - 1## elements    |
+| More than ⌊n/2⌋ | **1** element         |
+| More than ⌊n/3⌋ | **2** elements        |
+| More than ⌊n/4⌋ | **3** elements        |
+| More than ⌊n/k⌋ | **k - 1** elements    |
 
 **Reason**: If `m` elements each appear more than ⌊n/k⌋ times, then:
 
@@ -97,5 +97,5 @@ m * (⌊n/k⌋ + 1) ≤ n ⇒ m ≤ k - 1
 
 ## Application 
 
-This idea helps when you're trying to find elements appearing more than ⌊n/3⌋ times — in that case, you can use a **modified Boyer-Moore algorithm## that tracks two candidates instead of one.
+This idea helps when you're trying to find elements appearing more than ⌊n/3⌋ times — in that case, you can use a **modified Boyer-Moore algorithm** that tracks two candidates instead of one.
 

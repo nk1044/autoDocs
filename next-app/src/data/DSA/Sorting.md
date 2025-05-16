@@ -118,7 +118,7 @@ void InsertionSort(vector<int>&nums){
 
 # Radix Sort
 
-**Radix Sort## is a non-comparative integer sorting algorithm. It processes the digits of numbers from the least significant digit (LSD) to the most significant digit (MSD).
+**Radix Sort** is a non-comparative integer sorting algorithm. It processes the digits of numbers from the least significant digit (LSD) to the most significant digit (MSD).
 
 ## Use Case 
 
@@ -128,7 +128,7 @@ void InsertionSort(vector<int>&nums){
 ## How It Works: 
 
 1. Find the maximum number to know the number of digits.
-2. Start from the least significant digit and use **Counting Sort## as a subroutine to sort by that digit.
+2. Start from the least significant digit and use **Counting Sort** as a subroutine to sort by that digit.
 3. Repeat for all digit positions.
 
 ## Code Example (C++) 
@@ -184,7 +184,7 @@ int main() {
 
 # Bucket Sort
 
-**Bucket Sort## distributes elements into several "buckets", sorts each bucket (often with another sorting algorithm like insertion sort), and then concatenates them.
+**Bucket Sort** distributes elements into several "buckets", sorts each bucket (often with another sorting algorithm like insertion sort), and then concatenates them.
 
 ## Use Case 
 

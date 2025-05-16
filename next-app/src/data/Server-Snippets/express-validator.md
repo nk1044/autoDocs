@@ -1,6 +1,6 @@
 # Introduction to Express Validator
 
-**express-validator## is a set of express.js middlewares that wraps [docs](https://express-validator.github.io/docs), allowing you to validate and sanitize incoming request data. It helps keep your routes clean and ensures robust data validation for your backend APIs.
+**express-validator** is a set of express.js middlewares that wraps [docs](https://express-validator.github.io/docs), allowing you to validate and sanitize incoming request data. It helps keep your routes clean and ensures robust data validation for your backend APIs.
 
 
 # Install express-validator

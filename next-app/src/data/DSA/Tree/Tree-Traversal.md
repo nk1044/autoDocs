@@ -46,10 +46,8 @@ void preorder(Node* root){
 }
 ```
 
-**Time Complexity:## O(n) because each node is visited once.
-**Space Complexity:## O(h), where h is the height of the tree due to recursive calls in the call stack.
-
----
+**Time Complexity:** O(n) because each node is visited once.
+**Space Complexity:** O(h), where h is the height of the tree due to recursive calls in the call stack.
 
 # Inorder Traversal (Recursive) 
 
@@ -66,10 +64,9 @@ void Inorder(Node* root){
 }
 ```
 
-**Time Complexity:## O(n) since each node is visited once.
-**Space Complexity:## O(h) for the recursive function calls in the stack.
+**Time Complexity:** O(n) since each node is visited once.
+**Space Complexity:** O(h) for the recursive function calls in the stack.
 
----
 
 # Postorder Traversal (Recursive)
 
@@ -86,10 +83,9 @@ void postorder(Node* root){
 }
 ```
 
-**Time Complexity:## O(n) as each node is processed once.
-**Space Complexity:## O(h) due to recursion depth.
+**Time Complexity:** O(n) as each node is processed once.
+**Space Complexity:** O(h) due to recursion depth.
 
----
 
 # Level Order Traversal (Using Queue)
 
@@ -118,10 +114,9 @@ vector<vector<int>> LevelOrder(Node* root){
 }
 ```
 
-**Time Complexity:## O(n) since all nodes are visited once.
-**Space Complexity:## O(n) as we use a queue to store nodes.
+**Time Complexity:** O(n) since all nodes are visited once.
+**Space Complexity:** O(n) as we use a queue to store nodes.
 
----
 
 # Iterative Preorder Traversal
 
@@ -145,7 +140,6 @@ vector<int> preorderIterative(Node* root) {
 
 In iterative preorder traversal, a stack is used to process nodes in root-left-right order.
 
----
 
 # Iterative Inorder Traversal
 
@@ -169,7 +163,6 @@ vector<int> inorderIterative(Node* root) {
 
 In iterative inorder traversal, a stack is used to track the leftmost nodes first.
 
----
 
 # Iterative Postorder Traversal
 
@@ -193,6 +186,6 @@ vector<int> postorderIterative(Node* root) {
 }
 ```
 Postorder traversal requires two stacks to process nodes in left-right-root order iteratively.
-**Time complexity## of all traversals is O(n) as every node is visited once.
-**Space complexity## is O(h), where h is the tree height, due to recursive calls or stack usage.
+**Time complexity** of all traversals is O(n) as every node is visited once.
+**Space complexity** is O(h), where h is the tree height, due to recursive calls or stack usage.
 
