@@ -77,7 +77,7 @@ The Merge Sort algorithm follows a recursive approach. The array is split into t
 
 Insertion Sort is a simple and intuitive sorting algorithm that builds the sorted array one element at a time. It works similarly to how we sort playing cards in our hands. The algorithm iterates through the list and places each element in its correct position relative to the already sorted part of the array.
 
-## Working Principle:**
+## Working Principle:
 
 1. Start with the second element (index 1) and compare it with the previous elements.
 2. If the current element is smaller than the previous ones, shift the larger elements to the right.
@@ -100,7 +100,7 @@ void InsertionSort(vector<int>&nums){
 
 ```
 
-## Step-by-Step Explanation:**
+## Step-by-Step Explanation:
 
 
 * The outer loop iterates over each element from index 1 to the end.
@@ -191,7 +191,7 @@ int main() {
 * Best for uniformly distributed floating point numbers in [0, 1).
 * Time complexity: `O(n + k)`, where `k` is the number of buckets (usually ≈ `n`).
 
-## How It Works:**
+## How It Works:
 
 1. Create empty buckets.
 2. Distribute input numbers into buckets.
