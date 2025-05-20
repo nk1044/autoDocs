@@ -31,7 +31,7 @@ while(!pq.empty()){
 
 # 2. Bellman-Ford Algorithm
 
-**Purpose:** Find shortest paths from a single source in graphs that may have **negative edge weights**.
+**Purpose:** Find shortest paths from a single source in graphs that may have **negative edge weights** Works with only directed graph.
 
 **When to Use:** Use when the graph may contain negative weights. Can also detect **negative cycles**.
 
