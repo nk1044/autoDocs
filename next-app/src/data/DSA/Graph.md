@@ -33,6 +33,7 @@ while(!pq.empty()){
 
 **Purpose:** Find shortest paths from a single source in graphs that may have **negative edge weights**.
 In Bellman-Ford, each edge is relaxed up to V − 1 times to iteratively update shortest distances, even with negative weights.
+To detect a negative cycle, perform one more relaxation; if any distance still reduces, a negative cycle exists.
 **When to Use:** Use when the graph may contain negative weights. Can also detect **negative cycles**.
 
 ```cpp
