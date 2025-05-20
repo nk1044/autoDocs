@@ -173,8 +173,32 @@ Steps:
 # 8. Tarjan’s Algorithm
 
 **Purpose:** Find **Strongly Connected Components (SCCs)** using a single DFS.
-
+For this we take two array one time to reach and second lowestTime which is min time to reach apart from parent
 **When to Use:** Alternative to Kosaraju’s when stack-based DFS is more suitable.
+
+```cpp
+int time=1;
+    void dfs(int node,int parent,vector<int> &vis,vector<int> &tin, vector<int> &low,
+        vector<vector<int>> &bridges,vector<int> adj[]){
+        vis[node]=1;
+        tin[node]=time;
+        low[node]=time;
+        time++;
+        for(auto it:adj[node]){
+            if(it==parent) continue;
+            if(!vis[it]){
+                dfs(it,node,vis,tin,low,bridges,adj);
+                low[node]=min(low[node],low[it]);
+                if(low[it]>tin[node]){ 
+                    bridges.push_back({it,node});
+                }
+            }
+            else{
+                low[node]=min(low[node],low[it]);
+            }
+        }
+    }
+```
 
 **Time Complexity:** `O(V + E)`
 
