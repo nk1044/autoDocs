@@ -13,7 +13,7 @@ function InlineBlock({ text }) {
     <span className="relative inline-block">
       <code
         onClick={copyToClipboard}
-        className="cursor-pointer font-mono text-sm px-2 py-0.5 rounded transition
+        className="cursor-pointer font-mono px-1  rounded transition
                    dark:bg-neutral-900 bg-[#f0e9df]
                    dark:hover:bg-neutral-800 hover:bg-[#e6ded2]
                    dark:text-emerald-400 text-[#005f56] border

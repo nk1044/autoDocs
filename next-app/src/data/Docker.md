@@ -1,6 +1,6 @@
 # Docker Images
 
-To list available images, use `docker images`. You can run an image in a container using `docker run -it <image_name/id>`. If the image is not present locally, it will be pulled from Docker Hub**. Learn more [here](https://docs.docker.com/reference/cli/docker/image/).
+To list available images, use `docker images`. You can run an image in a container using `docker run -it <image_name/id>`. If the image is not present locally, it will be pulled from **Docker Hub**. Learn more [here](https://docs.docker.com/reference/cli/docker/image/).
 
 
 ## Code Example 

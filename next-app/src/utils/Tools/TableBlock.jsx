@@ -17,11 +17,11 @@ function TableBlock({ headers, rows, title }) {
       {/* Header with gradient accent */}
       <div className="relative">
         <div className="absolute top-0 left-0 w-full h-1 dark:bg-gradient-to-r dark:from-neutral-800 dark:via-neutral-700 dark:to-neutral-800 bg-gradient-to-r from-[#dfd4c7] via-[#d3c7b8] to-[#dfd4c7]" />
-        <div className="flex items-center px-5 py-3 dark:bg-neutral-900/90 bg-[#f6f1eb] border-b dark:border-neutral-800 border-[#e0d8cd] backdrop-blur-sm">
+        <div className="flex items-center px-5 py-2 dark:bg-neutral-900/90 bg-[#f6f1eb] border-b dark:border-neutral-800 border-[#e0d8cd] backdrop-blur-sm">
           <div className="flex items-center gap-2">
-            <Table size={18} className="dark:text-neutral-400 text-[#7b3f00]" />
+            <Table size={15} className="dark:text-neutral-400 text-[#7b3f00]" />
             {title && (
-              <h3 className="text-lg font-medium dark:text-neutral-200 text-[#4a2d12] tracking-wide">
+              <h3 className="text-md font-medium dark:text-orange-400 text-[#4a2d12] tracking-wide">
                 {title}
               </h3>
             )}
@@ -30,7 +30,7 @@ function TableBlock({ headers, rows, title }) {
       </div>
 
       {/* Table content */}
-      <div className="px-4 py-4 dark:bg-black bg-[#f8f5f1]">
+      <div className="px-4 py-2 dark:bg-black bg-[#f8f5f1]">
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
@@ -38,7 +38,7 @@ function TableBlock({ headers, rows, title }) {
                 {headers?.map((header, index) => (
                   <th 
                     key={index} 
-                    className="py-3 px-4 text-left text-sm font-medium dark:text-neutral-300 text-[#5a4634] dark:border-b-2 dark:border-neutral-800 border-b-2 border-[#e1d7cc]"
+                    className="py-1 px-4 text-left text-md font-medium dark:text-neutral-300 text-[#5a4634] dark:border-b-2 dark:border-neutral-800 border-b-2 border-[#e1d7cc]"
                   >
                     {formatText(header)}
                   </th>
@@ -54,7 +54,7 @@ function TableBlock({ headers, rows, title }) {
                   {row.map((cell, cellIndex) => (
                     <td 
                       key={cellIndex} 
-                      className={`py-3 px-4 text-sm dark:text-neutral-300 text-[#4a3b2c] ${
+                      className={`py-1 px-4 text-md dark:text-neutral-300 text-[#4a3b2c] ${
                         numericColumns[cellIndex] ? 'text-right tabular-nums' : ''
                       }`}
                     >

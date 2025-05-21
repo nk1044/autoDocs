@@ -40,7 +40,7 @@ const CodeBlock = ({ code, language = "bash" }) => {
         <div className="flex justify-between items-center px-5 py-3 dark:bg-neutral-950 bg-[#f6f1eb] border-b dark:border-neutral-800 border-[#e0d8cd] backdrop-blur-sm">
           <div className="flex items-center gap-2">
             <Code size={18} className="dark:text-gray-400 text-[#7b3f00]" />
-            <span className="text-sm dark:text-gray-300 text-[#4a2d12] font-medium capitalize tracking-wide">
+            <span className="text-sm dark:text-orange-400 text-[#4a2d12] font-medium capitalize tracking-wide">
               {language}
             </span>
           </div>

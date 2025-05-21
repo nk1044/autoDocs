@@ -12,11 +12,11 @@ function ListBlock({
       {/* Gradient top bar */}
       <div className="relative">
         <div className="absolute top-0 left-0 w-full h-1 dark:bg-gradient-to-r dark:from-neutral-800 dark:via-neutral-700 dark:to-neutral-800 bg-gradient-to-r from-[#dfd4c7] via-[#d3c7b8] to-[#dfd4c7]" />
-        <div className="flex items-center px-5 py-3 dark:bg-neutral-900 bg-[#f6f1eb] border-b dark:border-neutral-800 border-[#e0d8cd] backdrop-blur-sm">
+        <div className="flex items-center px-3 py-2 dark:bg-neutral-900 bg-[#f6f1eb] border-b dark:border-neutral-800 border-[#e0d8cd] backdrop-blur-sm">
           <div className="flex items-center gap-2">
-            <ListIcon size={18} className="dark:text-neutral-400 text-[#7b3f00]" />
+            <ListIcon size={15} className="dark:text-neutral-400 text-[#7b3f00]" />
             {text && (
-              <h3 className="text-lg font-medium dark:text-orange-400 text-[#4a2d12] tracking-wide">
+              <h3 className="text-md font-medium dark:text-orange-400 text-[#4a2d12] tracking-wide">
                 {text}
               </h3>
             )}
@@ -25,7 +25,7 @@ function ListBlock({
       </div>
 
       {/* List Content */}
-      <div className="px-6 py-4 dark:bg-black bg-[#f8f5f1] text-sm dark:text-neutral-300 text-[#4a3b2c]">
+      <div className="px-6 py-4 dark:bg-black bg-[#f8f5f1] text-md dark:text-neutral-300 text-[#4a3b2c]">
         {ordered ? (
           <ol className="list-decimal list-inside space-y-1 marker:dark:text-neutral-500 marker:text-[#a08c74]">
             {items.map((item, index) => (
