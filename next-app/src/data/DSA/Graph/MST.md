@@ -1,4 +1,4 @@
-# Introduction to Minimum Spanning Tree (MST)
+# Minimum Spanning Tree (MST)
 
 ## What is an MST?
 
@@ -129,5 +129,53 @@ int main() {
 }
 ```
 
-# Prim's Algorithm
+Here’s a **clear, detailed, and improved version** of the notes for **Prim’s Algorithm** along with a properly commented C++ implementation. This includes a deeper explanation, a cleaner structure, and formatting for better readability.
+
+
+# Prim’s Algorithm
+
+## What is Prim’s Algorithm?
+
+**Prim’s Algorithm** is a **greedy algorithm** that finds a **Minimum Spanning Tree (MST)** for a connected, undirected, weighted graph.
+It builds the MST by **growing one vertex at a time**, always choosing the **lowest-weight edge** that connects a vertex **inside** the MST to a vertex **outside** it.
+
+
+## Time & Space Complexity
+
+* **Time Complexity**: `O(E log V)` using a **min-heap (priority queue)**, `E` = number of edges, `V` = number of vertices
+* **Space Complexity**: `O(V)` for arrays
+
+
+## Why It Works
+
+The algorithm always extends the MST using the **smallest weight edge** that connects a new vertex to the MST. This ensures a **locally optimal choice** at each step, leading to a **globally optimal MST**.
+
+
+## C++ Implementation
+
+```cpp
+// adj[i] = vector of {node, weight}
+int Prims(vector<vector<vector<int>>>&adj){
+    int n = adj.size();
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+    vector<bool> visited(n, false);
+    
+    // {weight, node}
+    pq.push({0, 0});
+    int mst_weight = 0;
+
+    while(!pq.empty()){
+        auto [wt, u] = pq.top(); 
+        pq.pop();
+        if(visited[u]) continue;
+        visited[u] = true;
+        mst_weight += wt;
+
+        for(auto [v, w]: adj[u])
+            if(!visited[v])
+                pq.push({w, v});
+    }
+    return mst_weight;
+}
+```
 
