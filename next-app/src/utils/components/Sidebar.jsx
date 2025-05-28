@@ -4,31 +4,32 @@ import { useRouter } from 'next/router';
 import { Folder, FolderOpen, File } from 'lucide-react';
 
 function SideBarItem({ item, level = 0, activePath, parentPath = '' }) {
-  const currentPath = `${parentPath}/${item.name}`;
+  const iconSize = 16;
 
-  const isInActivePath = (item, currentPath) => {
-    if (currentPath === activePath) return true;
+  // Normalize currentPath
+  const currentPath = [parentPath, item.name].filter(Boolean).join('/');
+  const hasChildren = item.children && item.children.length > 0;
+  const paddingLeft = `${level * 16}px`;
+
+  // Determine if item is in active path
+  const isInActivePath = (item, path) => {
+    if (path === activePath) return true;
     if (item.children) {
       return item.children.some(child =>
-        isInActivePath(child, `${currentPath}/${child.name}`)
+        isInActivePath(child, [path, child.name].filter(Boolean).join('/'))
       );
     }
     return false;
   };
 
-  const [isExpanded, setIsExpanded] = useState(() => {
-    return isInActivePath(item, currentPath);
-  });
+  const [isExpanded, setIsExpanded] = useState(() =>
+    isInActivePath(item, currentPath)
+  );
 
   useEffect(() => {
-    if (isInActivePath(item, currentPath)) {
-      setIsExpanded(true);
-    }
-  }, [activePath, item]);
-
-  const hasChildren = item.children && item.children.length > 0;
-  const paddingLeft = `${level * 16}px`;
-  const iconSize = 16;
+    setIsExpanded(isInActivePath(item, currentPath));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleFolder = () => {
     if (hasChildren) setIsExpanded(prev => !prev);
@@ -43,7 +44,7 @@ function SideBarItem({ item, level = 0, activePath, parentPath = '' }) {
             flex items-center cursor-pointer px-3 py-1.5 rounded-sm transition-all
             dark:hover:bg-neutral-800 hover:bg-[#e6dbcf]
             dark:hover:text-orange-400 hover:text-[#7b3f00]
-            ${isExpanded ? 'dark:text-orange-400 text-[#7b3f00]' : 'dark:text-neutral-300 text-neutral-700'}
+            dark:text-neutral-300 text-neutral-700
           `}
           style={{ paddingLeft }}
         >
@@ -56,11 +57,11 @@ function SideBarItem({ item, level = 0, activePath, parentPath = '' }) {
         </div>
       ) : (
         <Link
-          href={`/docs${currentPath}`}
+          href={`/docs/${currentPath}`}
           className={`
             flex items-center px-3 py-1.5 rounded-sm transition-all
             ${activePath === currentPath
-              ? 'dark:bg-orange-950 dark:text-orange-400 bg-[#e3c3a3] text-[#7b3f00]'
+              ? 'dark:text-orange-400 text-[#7b3f00]'
               : 'dark:text-neutral-300 text-neutral-700 dark:hover:bg-neutral-800 hover:bg-[#e6dbcf] dark:hover:text-orange-400 hover:text-[#7b3f00]'
             }`}
           style={{ paddingLeft }}
@@ -69,11 +70,12 @@ function SideBarItem({ item, level = 0, activePath, parentPath = '' }) {
           <span>{item.name.replace(/\.md$/, '')}</span>
         </Link>
       )}
+
       {isExpanded && hasChildren && (
         <div className="flex flex-col">
           {item.children.map((child, index) => (
             <SideBarItem
-              key={child.name + index}
+              key={`${child.name}-${index}`}
               item={child}
               level={level + 1}
               activePath={activePath}
@@ -88,7 +90,11 @@ function SideBarItem({ item, level = 0, activePath, parentPath = '' }) {
 
 export default function SideBar({ sidebarData }) {
   const router = useRouter();
-  const activePath = router.asPath.split('/docs/')[1] || '';
+
+  // Normalize activePath
+  const activePath = decodeURIComponent(
+    (router.asPath.split('/docs/')[1] || '').replace(/\/$/, '')
+  );
 
   return (
     <div className="flex flex-col h-full w-64 dark:bg-black bg-[#f6f1eb] dark:border-neutral-800 border-[#d6c8b9] dark:text-white text-neutral-800 overflow-auto p-2">
@@ -97,7 +103,7 @@ export default function SideBar({ sidebarData }) {
       </div>
       {sidebarData && sidebarData.map((item, index) => (
         <SideBarItem
-          key={item.name + index}
+          key={`${item.name}-${index}`}
           item={item}
           activePath={activePath}
           parentPath=""
