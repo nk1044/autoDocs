@@ -3,6 +3,9 @@
 
 A linked list is a linear data structure where elements are stored in nodes. Each node contains data and a pointer to the next node in the sequence. Linked lists provide dynamic memory allocation and efficient insertion and deletion of elements.
 
+
+![image](https://i.postimg.cc/qq6Kxd4H/Screenshot-2025-06-14-at-9-53-02-PM.png)
+
 # Creating a Linked List from a Vector
 
 A linked list is a data structure where elements (nodes) are linked together using pointers. Each node consists of a data field and a pointer to the next node in the list. The given C++ program demonstrates how to create a singly linked list from a vector.
