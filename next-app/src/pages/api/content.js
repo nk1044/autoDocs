@@ -1,133 +1,149 @@
-// pages/api/read-file.js
 import fs from 'fs';
 import path from 'path';
+import { FormatData } from '@/lib/page-formatter';
+import { elasticClient } from '@/lib/elastic';
 
-function FormatData(data, fullPath = "docs") {
-    const FormattedData = [];
-    const lines = data.split('\n');
-  
-    let i = 0;
-    let codeBlock = null;
-    let tableLines = [];
-    let listLines = [];
-  
-    while (i < lines.length) {
-      const line = lines[i];
-  
-      // --- Code block ---
-      if (line.startsWith("```")) {
-        if (codeBlock === null) {
-          codeBlock = {
-            type: "CodeBlock",
-            content: "",
-            language: line.slice(3) || undefined,
-          };
-        } else {
-          FormattedData.push({ ...codeBlock });
-          codeBlock = null;
+const INDEX_NAME = 'docs_content';
+
+// Initialize Elasticsearch index
+async function initializeIndex() {
+  try {
+    const indexExists = await elasticClient.indices.exists({
+      index: INDEX_NAME
+    });
+
+    if (!indexExists) {
+      await elasticClient.indices.create({
+        index: INDEX_NAME,
+        body: {
+          mappings: {
+            properties: {
+              fullPath: { type: 'keyword' },
+              fileName: { type: 'text' },
+              content: { type: 'text' },
+              rawContent: { type: 'text' },
+              formattedBlocks: { type: 'object' },
+              lastModified: { type: 'date' },
+              fileType: { type: 'keyword' },
+              headings: { type: 'text' },
+              codeBlocks: { type: 'text' },
+              tags: { type: 'keyword' }
+            }
+          }
         }
-        i++;
-        continue;
-      }
-      if (codeBlock) {
-        codeBlock.content += line + "\n";
-        i++;
-        continue;
-      }
-  
-      // --- Heading ---
-      if (line.startsWith("#")) {
-        const headingLevel = line.match(/^#+/)[0].length;
-        const headingText = line.slice(headingLevel).trim();
-        const id = `${fullPath}-heading-${FormattedData.length + 1}`;
-  
-        FormattedData.push({
-          type: headingLevel === 1 ? "Heading" : "SubHeading",
-          content: headingText,
-          ...(headingLevel === 1 ? { id } : {}),
-        });
-  
-        i++;
-        continue;
-      }
-  
-      // --- Table ---
-      if (line.includes('|') && lines[i + 1]?.includes('|') && lines[i + 1].includes('---')) {
-        tableLines.push(lines[i]);
-        tableLines.push(lines[i + 1]);
-        i += 2;
-        while (i < lines.length && lines[i].includes('|')) {
-          tableLines.push(lines[i]);
-          i++;
-        }
-  
-        const headers = tableLines[0].split('|').map(h => h.trim()).filter(Boolean);
-        const rows = tableLines.slice(2).map(row =>
-          row.split('|').map(cell => cell.trim()).filter(Boolean)
-        );
-  
-        FormattedData.push({
-          type: "TableBlock",
-          tablecontent: {
-            title: "Table",
-            headers,
-            rows,
-          },
-        });
-  
-        tableLines = [];
-        continue;
-      }
-  
-      // --- List ---
-      if (/^[-*+]\s+/.test(line)) {
-        while (i < lines.length && /^[-*+]\s+/.test(lines[i].trim())) {
-          listLines.push(lines[i].trim().replace(/^[-*+]\s+/, ""));
-          i++;
-        }
-  
-        FormattedData.push({
-          type: "ListBlock",
-          content: listLines,
-        });
-  
-        listLines = [];
-        continue;
-      }
-  
-      // --- Paragraph ---
-      if (line.length > 0) {
-        FormattedData.push({
-          type: "Paragraph",
-          content: line,
-        });
-      }
-  
-      i++;
+      });
+      console.log(`✅ Created Elasticsearch index: ${INDEX_NAME}`);
     }
-  
-    return FormattedData;
+  } catch (error) {
+    console.error('❌ Error initializing Elasticsearch index:', error);
   }
+}
 
-  
-// http://localhost:3000/api/content?fullPath=test.md
-export default function handler(req, res) {
-    const baseDir = path.resolve('src/data');
-    const fullPath = req.query.fullPath;
-    console.log("Full path:", fullPath);
+// Index document content
+async function indexDocument(fullPath, rawContent, formattedData) {
+  try {
+    const fileName = path.basename(fullPath);
+    const fileStats = fs.statSync(path.join(path.resolve('src/data'), fullPath));
     
-  
-    if (!fullPath) {
-      return res.status(400).json({ error: 'Missing fullPath query parameter' });
-    }
-  
-    const filePath = path.join(baseDir, fullPath);
-  
-    try {
-      const data = fs.readFileSync(filePath, 'utf-8');
-    const formattedData = FormatData(data, fullPath);
-      res.status(200).json({ content: formattedData });
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to read file' });
-    }
+    // Extract different content types for better searchability
+    const headings = formattedData
+      .filter(block => block.type === 'Heading' || block.type === 'SubHeading')
+      .map(block => block.content)
+      .join(' ');
+    
+    const codeBlocks = formattedData
+      .filter(block => block.type === 'CodeBlock')
+      .map(block => block.content)
+      .join(' ');
+    
+    const paragraphs = formattedData
+      .filter(block => block.type === 'Paragraph')
+      .map(block => block.content)
+      .join(' ');
+    
+    const lists = formattedData
+      .filter(block => block.type === 'ListBlock')
+      .map(block => block.content.join(' '))
+      .join(' ');
+    
+    // Combine all text content
+    const allContent = `${headings} ${paragraphs} ${lists} ${codeBlocks}`.trim();
+    
+    // Extract tags from content (looking for #tag patterns)
+    const tags = (rawContent.match(/#\w+/g) || []).map(tag => tag.substring(1));
+    
+    const document = {
+      fullPath,
+      fileName,
+      content: allContent,
+      rawContent,
+      formattedBlocks: formattedData,
+      lastModified: fileStats.mtime,
+      fileType: path.extname(fullPath).substring(1) || 'md',
+      headings,
+      codeBlocks,
+      tags
+    };
+
+    await elasticClient.index({
+      index: INDEX_NAME,
+      id: fullPath,
+      body: document
+    });
+
+    console.log(`✅ Indexed document: ${fullPath}`);
+  } catch (error) {
+    console.error(`❌ Error indexing document ${fullPath}:`, error);
   }
+}
+
+// Check if document needs reindexing
+async function shouldReindex(fullPath, fileStats) {
+  try {
+    const response = await elasticClient.get({
+      index: INDEX_NAME,
+      id: fullPath
+    });
+    
+    const indexedDate = new Date(response.body._source.lastModified);
+    const fileDate = fileStats.mtime;
+    
+    return fileDate > indexedDate;
+  } catch (error) {
+    // Document doesn't exist, so we should index it
+    return true;
+  }
+}
+
+// http://localhost:3000/api/content?fullPath=test.md
+export default async function handler(req, res) {
+  const baseDir = path.resolve('src/data');
+  const fullPath = req.query.fullPath;
+
+  if (!fullPath) {
+    return res.status(400).json({ error: 'Missing fullPath query parameter' });
+  }
+
+  const filePath = path.join(baseDir, fullPath);
+
+  try {
+    // Initialize index if needed
+    await initializeIndex();
+    
+    const data = fs.readFileSync(filePath, 'utf-8');
+    const formattedData = FormatData(data, fullPath);
+    
+    // Check if we need to reindex this document
+    const fileStats = fs.statSync(filePath);
+    const needsReindexing = await shouldReindex(fullPath, fileStats);
+    
+    if (needsReindexing) {
+      await indexDocument(fullPath, data, formattedData);
+    }
+    
+    res.status(200).json({ content: formattedData });
+  } catch (error) {
+    console.error("❌ Error processing file:", error.message);
+    res.status(500).json({ error: 'Failed to read or index file' });
+  }
+}

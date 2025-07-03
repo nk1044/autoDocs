@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Search, Moon, Sun, Menu } from 'lucide-react';
+import React, { useEffect, useState, useRef } from 'react';
+import { Search, Moon, Sun, Menu, FileText, Hash, Code } from 'lucide-react';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 
 function Header({ sidebarOpen, setSidebarOpen }) {
   const router = useRouter();
@@ -10,6 +9,10 @@ function Header({ sidebarOpen, setSidebarOpen }) {
   const [searchResults, setSearchResults] = useState([]);
   const [searchError, setSearchError] = useState(null);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const searchInputRef = useRef(null);
+  const searchResultsRef = useRef(null);
 
   useEffect(() => {
     const isDark =
@@ -23,24 +26,84 @@ function Header({ sidebarOpen, setSidebarOpen }) {
 
   // Debounced search effect
   useEffect(() => {
-    if (!search) return;
+    if (!search.trim()) {
+      setSearchResults([]);
+      setShowResults(false);
+      setSearchError(null);
+      return;
+    }
 
     const timer = setTimeout(() => {
-      fetchData(search);
-    }, 2000);
+      fetchSearchResults(search);
+    }, 300); // Reduced debounce time for better UX
 
     return () => clearTimeout(timer);
   }, [search]);
 
-  const fetchData = async (keyword) => {
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!showResults) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setSelectedIndex(prev => 
+          prev < searchResults.length - 1 ? prev + 1 : prev
+        );
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setSelectedIndex(prev => prev > 0 ? prev - 1 : -1);
+      } else if (e.key === 'Enter' && selectedIndex >= 0) {
+        e.preventDefault();
+        const result = searchResults[selectedIndex];
+        if (result) {
+          handleResultClick(result.fullPath);
+        }
+      } else if (e.key === 'Escape') {
+        setShowResults(false);
+        setSelectedIndex(-1);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [showResults, searchResults, selectedIndex]);
+
+  // Global search shortcut (Cmd/Ctrl + K)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const fetchSearchResults = async (keyword) => {
     setSearchLoading(true);
+    setSearchError(null);
+    
     try {
-      const response = await axios.post('/api/search', { keyword });
-      setSearchResults(response.data.matches);
-      setSearchError(null);
+      const response = await fetch(
+        `/api/search?q=${encodeURIComponent(keyword)}&limit=8`
+      );
+      
+      if (!response.ok) {
+        throw new Error('Search failed');
+      }
+      
+      const data = await response.json();
+      setSearchResults(data.results || []);
+      setShowResults(true);
+      setSelectedIndex(-1);
     } catch (error) {
-      console.error('Error fetching data:', error);
-      setSearchError('Failed to fetch search results');
+      console.error('Search error:', error);
+      setSearchError('Search failed. Please try again.');
+      setSearchResults([]);
+      setShowResults(true);
     } finally {
       setSearchLoading(false);
     }
@@ -50,8 +113,51 @@ function Header({ sidebarOpen, setSidebarOpen }) {
     setSearch(e.target.value);
   };
 
-  const handleResultClick = (uniqueKey) => {
-    router.push(`/docs/${uniqueKey}`);
+  const handleResultClick = (fullPath) => {
+    const path = fullPath;
+    router.push(`/docs/${path}`);
+    setShowResults(false);
+    setSearch('');
+    setSelectedIndex(-1);
+  };
+
+  const handleSearchFocus = () => {
+    if (search.trim() && searchResults.length > 0) {
+      setShowResults(true);
+    }
+  };
+
+  const handleSearchBlur = () => {
+    // Delay hiding results to allow for clicks
+    setTimeout(() => {
+      setShowResults(false);
+      setSelectedIndex(-1);
+    }, 200);
+  };
+
+  const getFileIcon = (fileType) => {
+    switch (fileType) {
+      case 'md':
+        return <FileText size={16} />;
+      case 'js':
+      case 'jsx':
+      case 'ts':
+      case 'tsx':
+        return <Code size={16} />;
+      default:
+        return <FileText size={16} />;
+    }
+  };
+
+  const highlightText = (text, highlights) => {
+    if (!highlights || highlights.length === 0) return text;
+    
+    // Return the highlighted HTML directly
+    return (
+      <span 
+        dangerouslySetInnerHTML={{ __html: highlights[0] }}
+      />
+    );
   };
 
   const toggleTheme = () => {
@@ -96,17 +202,25 @@ function Header({ sidebarOpen, setSidebarOpen }) {
             <Search size={18} />
           </span>
           <input
+            ref={searchInputRef}
             type="text"
-            placeholder="Search documentation..."
+            placeholder="Search documentation... (⌘K)"
             value={search}
             onChange={handleSearchChange}
+            onFocus={handleSearchFocus}
+            onBlur={handleSearchBlur}
             className="w-full dark:bg-black bg-[#f2e7dc] dark:text-neutral-200 text-[#3b2e26] pl-10 pr-4 py-2 rounded-3xl border dark:border-neutral-800 border-[#d4c2b2] focus:outline-none focus:ring-2 dark:focus:ring-black dark:placeholder-neutral-500 placeholder-[#6d5444] text-sm transition-all"
           />
+          
           {/* Search Results Dropdown */}
-          {(search || searchError) && (
-            <div className="absolute z-10 w-full bg-white dark:bg-neutral-800 shadow-lg rounded-xl mt-2 border dark:border-neutral-700 border-[#d4c2b2] overflow-hidden">
+          {showResults && (
+            <div 
+              ref={searchResultsRef}
+              className="absolute z-50 w-full bg-white dark:bg-neutral-800 shadow-lg rounded-xl mt-2 border dark:border-neutral-700 border-[#d4c2b2] overflow-hidden max-h-96 overflow-y-auto"
+            >
               {searchLoading ? (
-                <div className="px-4 py-3 text-sm text-neutral-500 dark:text-neutral-400">
+                <div className="px-4 py-3 text-sm text-neutral-500 dark:text-neutral-400 flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
                   Searching...
                 </div>
               ) : searchError ? (
@@ -115,29 +229,89 @@ function Header({ sidebarOpen, setSidebarOpen }) {
                 </div>
               ) : searchResults.length === 0 ? (
                 <div className="px-4 py-3 text-sm text-neutral-500 dark:text-neutral-400">
-                  No results found.
+                  No results found for "{search}".
                 </div>
               ) : (
-                searchResults.map((result) => (
-                  <div
-                    key={result.uniqueKey}
-                    onClick={() => handleResultClick(result.uniqueKey)}
-                    className="cursor-pointer px-4 py-2 hover:bg-[#f5f2ee] dark:hover:bg-neutral-700 transition-colors duration-200"
-                  >
-                    <div className="font-medium dark:text-white text-[#3b2e26]">
-                      {result.name}
-                    </div>
-                    {result.snippet && (
-                      <div className="text-sm text-neutral-500 dark:text-neutral-400">
-                        {result.snippet}
+                <>
+                  {searchResults.map((result, index) => (
+                    <div
+                      key={result.id}
+                      onClick={() => handleResultClick(result.fullPath)}
+                      className={`cursor-pointer px-4 py-3 transition-colors duration-200 ${
+                        index === selectedIndex
+                          ? 'bg-[#f5f2ee] dark:bg-neutral-700'
+                          : 'hover:bg-[#f5f2ee] dark:hover:bg-neutral-700'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 mt-1 dark:text-neutral-400 text-[#6d5444]">
+                          {getFileIcon(result.fileType)}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-medium dark:text-white text-[#3b2e26] truncate">
+                            {result.fileName}
+                          </div>
+                          <div className="text-xs text-neutral-500 dark:text-neutral-400 truncate mb-1">
+                            {result.fullPath}
+                          </div>
+                          
+                          {/* Show highlighted content */}
+                          {result.highlights.headings && (
+                            <div className="text-sm text-neutral-700 dark:text-neutral-300 mb-1">
+                              <strong>Heading: </strong>
+                              {highlightText('', result.highlights.headings)}
+                            </div>
+                          )}
+                          
+                          {result.highlights.content && (
+                            <div className="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">
+                              {highlightText('', result.highlights.content)}
+                            </div>
+                          )}
+                          
+                          {!result.highlights.content && !result.highlights.headings && (
+                            <div className="text-sm text-neutral-600 dark:text-neutral-400 truncate">
+                              {result.contentPreview}
+                            </div>
+                          )}
+                          
+                          {/* Tags */}
+                          {result.tags && result.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-2">
+                              {result.tags.slice(0, 3).map(tag => (
+                                <span
+                                  key={tag}
+                                  className="inline-flex items-center gap-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-0.5 rounded"
+                                >
+                                  <Hash size={10} />
+                                  {tag}
+                                </span>
+                              ))}
+                              {result.tags.length > 3 && (
+                                <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                                  +{result.tags.length - 3} more
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    )}
+                    </div>
+                  ))}
+                  
+                  {/* Footer with navigation hints */}
+                  <div className="px-4 py-2 border-t dark:border-neutral-700 border-[#d4c2b2] bg-neutral-50 dark:bg-neutral-900 text-xs text-neutral-500 dark:text-neutral-400 flex justify-between items-center">
+                    <span>{searchResults.length} results</span>
+                    <div className="flex gap-3">
+                      <span>↑↓ Navigate</span>
+                      <span>↵ Select</span>
+                      <span>ESC Close</span>
+                    </div>
                   </div>
-                ))
+                </>
               )}
             </div>
           )}
-
         </div>
 
         {/* Right: Icons */}

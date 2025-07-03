@@ -1,115 +1,155 @@
-// pages/api/search.js
+import { elasticClient } from '@/lib/elastic';
 
-import fs from 'fs/promises';
-import path from 'path';
+const INDEX_NAME = 'docs_content';
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Only POST allowed' });
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { keyword } = req.body;
-  if (!keyword || typeof keyword !== 'string') {
-    return res.status(400).json({ error: 'Missing or invalid keyword' });
-  }
+  const { 
+    q: query, 
+    limit = 10, 
+    offset = 0, 
+    type, 
+    tags 
+  } = req.query;
 
-  const baseDir = path.resolve('src/data');
-  const results = [];
+  if (!query) {
+    return res.status(400).json({ error: 'Missing query parameter' });
+  }
 
   try {
-    const files = await getAllMarkdownFiles(baseDir);
-
-    for (const filePath of files) {
-      const content = await fs.readFile(filePath, 'utf-8');
-      const relativePath = path.relative(baseDir, filePath).replace(/\\/g, '/'); // Windows-safe
-      
-      // Generate IDs that match the FormatData function
-      const formattedData = formatDataHeaders(content, relativePath);
-      
-      // Find headings that match the keyword
-      formattedData.forEach((item, index) => {
-        if ((item.type === "Heading" || item.type === "SubHeading") && 
-            item.content.toLowerCase().includes(keyword.toLowerCase())) {
-          
-          // For H1 headings - use the ID from FormatData
-          if (item.id) {
-            results.push({
-              id: `${relativePath}#${item.id}`,
-              name: item.content,
-              uniqueKey: `${relativePath}#${item.id}`
-            });
-          } else {
-            // For other headings, create a unique key by adding the index
-            results.push({
-              id: relativePath,
-              name: item.content,
-              uniqueKey: `${relativePath}-subheading-${index}`
-            });
+    const searchBody = {
+      query: {
+        bool: {
+          must: [
+            {
+              multi_match: {
+                query,
+                fields: [
+                  'content^3',      // Boost general content
+                  'headings^5',     // Boost headings higher
+                  'fileName^4',     // Boost file names
+                  'rawContent^2',   // Boost raw content
+                  'codeBlocks^1'    // Code blocks with normal weight
+                ],
+                type: 'best_fields',
+                fuzziness: 'AUTO'
+              }
+            }
+          ],
+          filter: []
+        }
+      },
+      highlight: {
+        fields: {
+          content: {
+            fragment_size: 150,
+            number_of_fragments: 3,
+            pre_tags: ['<mark>'],
+            post_tags: ['</mark>']
+          },
+          headings: {
+            fragment_size: 100,
+            number_of_fragments: 2,
+            pre_tags: ['<mark>'],
+            post_tags: ['</mark>']
+          },
+          rawContent: {
+            fragment_size: 200,
+            number_of_fragments: 2,
+            pre_tags: ['<mark>'],
+            post_tags: ['</mark>']
           }
         }
+      },
+      from: parseInt(offset),
+      size: parseInt(limit),
+      sort: [
+        '_score',
+        { lastModified: { order: 'desc' } }
+      ]
+    };
+
+    // Add file type filter if specified
+    if (type) {
+      searchBody.query.bool.filter.push({
+        term: { fileType: type }
       });
     }
 
-    res.status(200).json({ matches: results });
-  } catch (err) {
-    console.error('Search error:', err);
-    res.status(500).json({ error: 'Failed to search files', message: err.message });
-  }
-}
-
-// Helper: Recursively get all .md files
-async function getAllMarkdownFiles(dir) {
-  const entries = await fs.readdir(dir, { withFileTypes: true });
-  const files = await Promise.all(
-    entries.map((entry) => {
-      const fullPath = path.join(dir, entry.name);
-      if (entry.isDirectory()) {
-        return getAllMarkdownFiles(fullPath);
-      } else if (entry.isFile() && entry.name.endsWith('.md')) {
-        return fullPath;
-      } else {
-        return null;
-      }
-    })
-  );
-  return files.flat().filter(Boolean);
-}
-
-// Extract only the heading information from content similar to FormatData
-function formatDataHeaders(data, fullPath) {
-  const formattedHeaders = [];
-  const lines = data.split('\n');
-  
-  let codeBlock = false;
-  let headingCount = 0;
-  
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    
-    // Skip code blocks
-    if (line.startsWith('```')) {
-      codeBlock = !codeBlock;
-      continue;
-    }
-    
-    if (codeBlock) continue;
-    
-    // Process headings
-    if (line.startsWith('#')) {
-      const headingLevel = line.match(/^#+/)[0].length;
-      const headingText = line.slice(headingLevel).trim();
-      headingCount++;
-      
-      // Only generate IDs for Heading (H1) elements
-      const id = headingLevel === 1 ? `${fullPath}-heading-${headingCount}` : undefined;
-      
-      formattedHeaders.push({
-        type: headingLevel === 1 ? "Heading" : "SubHeading",
-        content: headingText,
-        ...(id ? { id } : {}),
+    // Add tags filter if specified
+    if (tags) {
+      const tagArray = Array.isArray(tags) ? tags : [tags];
+      searchBody.query.bool.filter.push({
+        terms: { tags: tagArray }
       });
     }
+
+    const response = await elasticClient.search({
+      index: INDEX_NAME,
+      body: searchBody
+    });
+
+    // Debug logging to understand the response structure
+    console.log('🔍 Elasticsearch response structure:', {
+      hasBody: !!response.body,
+      hasHits: !!response.hits,
+      responseKeys: Object.keys(response),
+      bodyKeys: response.body ? Object.keys(response.body) : 'no body'
+    });
+
+    // Handle different response structures
+    let searchResults;
+    if (response.body && response.body.hits) {
+      // Older client version with .body
+      searchResults = response.body;
+    } else if (response.hits) {
+      // Newer client version without .body
+      searchResults = response;
+    } else {
+      throw new Error('Unexpected Elasticsearch response structure');
+    }
+
+    if (!searchResults.hits || !searchResults.hits.hits) {
+      throw new Error('No hits found in Elasticsearch response');
+    }
+
+    const results = searchResults.hits.hits.map(hit => ({
+      id: hit._id,
+      score: hit._score,
+      fullPath: hit._source?.fullPath || 'Unknown path',
+      fileName: hit._source?.fileName || 'Unknown file',
+      fileType: hit._source?.fileType || 'Unknown type',
+      lastModified: hit._source?.lastModified || null,
+      tags: hit._source?.tags || [],
+      highlights: hit.highlight || {},
+      // Include a snippet of the content for preview
+      contentPreview: hit._source?.content ? 
+        hit._source.content.substring(0, 200) + '...' : 
+        'No content preview available'
+    }));
+
+    res.status(200).json({
+      query,
+      total: searchResults.hits.total?.value || searchResults.hits.total || 0,
+      results,
+      took: searchResults.took || 0,
+      maxScore: searchResults.hits.max_score || 0
+    });
+
+  } catch (error) {
+    console.error('❌ Search error:', error);
+    console.error('❌ Error details:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
+    
+    res.status(500).json({ 
+      error: 'Search failed', 
+      details: error.message 
+    });
   }
-  
-  return formattedHeaders;
 }

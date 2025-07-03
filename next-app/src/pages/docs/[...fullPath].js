@@ -1,6 +1,7 @@
 import Layout from "@/utils/components/Layout";
 import Docs from "@/utils/components/Docs";
 
+
 export default function DocsPage({ sidebarData, content }) {
   return (
     <Layout sidebarData={sidebarData}>
@@ -21,15 +22,19 @@ export async function getStaticProps(context) {
 
   const resContent = await fetch(`${baseUrl}/api/content?fullPath=${encodeURIComponent(fullPathStr)}`);
   const content = await resContent.json();
+  // console.log("Content response:", resContent.content);
+  
   
   
   return {
     props: {
       sidebarData,
-      content: content.content ,
+      content: content.content || null,
     },
   };
 }
+
+
 
 export async function getStaticPaths() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
